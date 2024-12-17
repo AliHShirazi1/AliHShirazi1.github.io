@@ -17,9 +17,13 @@
         /* Background image */
         .background {
             background-image: url('bg_test1.png');
-            background-size: contain;
-            background-position: center;
+            background-size: cover; /* Ensures the image covers the width without repeating */
+            background-position: center center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            width: 100%; /* Ensures it covers the full width of the screen */
+            height: auto; /* Adjusts the height automatically based on the image's aspect ratio */
         }
+
 
 
 
