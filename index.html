@@ -11,27 +11,28 @@
             padding: 0;
             overflow: auto; /* Enable scrolling */
             font-family: Arial, sans-serif;
+            height: 100%;
         }
 
         /* Background image */
         .background {
-            background-image: url('bg_test1.png'); /* Replace 'background.png' with your image filename */
-            background-size: contain; /* Ensure the whole image fits */
+            background-image: url('bg_test1.png'); /* Replace 'bg_test1.png' with your image filename */
+            background-size: 100% auto; /* Fit horizontally while keeping the aspect ratio */
             background-repeat: no-repeat;
             background-position: top center;
-            min-height: 100vh; /* Ensures content starts at full viewport height */
-            width: 100%;
+            width: 100%; /* Full width of the viewport */
+            min-height: 100vh; /* At least as tall as the viewport */
         }
 
-        /* Main container */
+        /* Content container */
         .content {
             text-align: center;
             color: #ffffff; /* White text */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for readability */
-            margin-top: 20px;
+            padding: 20px; /* Add space inside the content */
         }
 
-        /* Main text styling */
+        /* Text styling */
         h1 {
             font-size: 3rem;
             margin: 0;
