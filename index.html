@@ -17,12 +17,15 @@
         /* Background image */
         .background {
             background-image: url('bg_test1.png'); /* Replace 'bg_test1.png' with your image filename */
-            background-size: 100%; /* Fit horizontally while keeping the aspect ratio */
+            background-size: cover; /* Ensure the image covers the entire width, but may be cropped vertically */
             background-repeat: no-repeat;
-            background-position: top center;
+            background-position: center top; /* Align the image to the top */
             width: 100%; /* Full width of the viewport */
-            min-height: 100vh; /* At least as tall as the viewport */
+            height: auto; /* Let the image height be determined by the aspect ratio */
+            min-height: 100vh; /* Minimum height of the container is the viewport height */
+            overflow-y: auto; /* Enable vertical scrolling if the image is taller than the viewport */
         }
+
 
         /* Content container */
         .content {
