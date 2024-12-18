@@ -14,7 +14,7 @@
             font-family: Arial, sans-serif;
             height: 100%;
             color: #fff;
-            background-color: #000; /* Fallback background color */
+            background-color: #000;
             overflow-x: hidden;
         }
 
@@ -38,10 +38,10 @@
         }
 
         .black-hole-container {
-            position: sticky; /* Change from 'fixed' to 'absolute' */
-            top: 10%; /* Padding from the top */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+            position: sticky;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
             width: 30.5vw;
             height: 30.5vw;
             max-width: 350px;
@@ -51,40 +51,46 @@
         .distorted-bg {
             background: url('BG_top.jpg') no-repeat;
             background-size: cover;
-            position: fixed; /* Fixed to the viewport */
-            top: -180%; /* Padding from the top */
-            left: 50%; /* Center horizontally */
-            transform: translateX(-50%); /* Adjust for perfect horizontal centering */
-            width: 30.5vw; /* 30% of the viewport width */
-            height: 30.5vw; /* Equal to width, keeping it circular */
-            max-width: 350px; /* Cap the maximum size */
-            max-height: 350px; /* Cap the maximum size */
+            position: fixed;
+            top: -180%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30.5vw;
+            height: 30.5vw;
+            max-width: 350px;
+            max-height: 350px;
             border-radius: 50%;
-            filter: url(#distortion-filter); /* Apply SVG distortion filter */
         }
 
-        /* Black Hole Circle */
+        @keyframes distort {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
         .black-circle {
-            position: fixed;  /* Change from 'absolute' to 'fixed' */
-            top: -180%;  /* Keep it at 40% from the top */
-            left: 50%;  /* Keep it at 50% horizontally */
-            transform: translate(-50%, -50%); /* Center it */
-            width: 30vw; /* 30% of the viewport width */
-            height: 30vw; /* Equal to width, keeping it circular */
-            max-width: 350px; /* Cap the maximum size */
-            max-height: 350px; /* Cap the maximum size */
+            position: fixed;
+            top: -180%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30vw;
+            height: 30vw;
+            max-width: 350px;
+            max-height: 350px;
             background: black;
             border-radius: 50%;
-            z-index: 2; /* Ensure it stays on top of other elements */
+            z-index: 2;
         }
 
-        /* Background */
         .background {
             background-image: url('bg_test1.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh; /* 100% viewport height */
+            height: 100vh;
             visibility: hidden;
             animation: fadeIn 2s ease-out forwards;
         }
@@ -93,8 +99,7 @@
             from { opacity: 0; }
             to { opacity: 1; visibility: visible; }
         }
-
-        /* Content */
+        
         .content {
             text-align: center;
             padding: 5rem 1rem;
@@ -109,7 +114,6 @@
             font-size: 1.25rem;
         }
 
-        /* Panels */
         .panels {
             position: relative;
             z-index: 10;
@@ -136,14 +140,12 @@
             transform: scale(1.03);
         }
 
-        /* Icons for Visual Appeal */
         .panel i {
             font-size: 2rem;
             margin-bottom: 10px;
             color: #00ff00;
         }
 
-        /* Footer */
         .footer {
             background-color: rgba(0, 0, 0, 0.8);
             color: #ccc;
@@ -152,7 +154,6 @@
             font-size: 1rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             p { font-size: 1.1rem; }
@@ -166,26 +167,22 @@
     </style>
 </head>
 <body>
-    <!-- Preloader -->
     <div class="preloader">
         <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
-    <!-- Background Section -->
     <div class="background">
         <div class="content">
             <h1>Welcome to My Page</h1>
             <p>This is hosted using GitHub Pages!</p>
         </div>
     </div>
+
     <div class="black-hole-container">
-        <!-- Distorted Background -->
         <div class="distorted-bg"></div>
-        <!-- Black Circle (Black Hole) -->
         <div class="black-circle"></div>
     </div>
 
-    <!-- Panels Section -->
     <div class="panels">
         <div class="panel">
             <i class="fas fa-code"></i>
@@ -204,6 +201,7 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(function() {
             var rotation = 0, 
