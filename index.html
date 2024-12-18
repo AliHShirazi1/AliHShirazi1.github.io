@@ -55,8 +55,8 @@
         transform: translateX(-50%); /* Adjust for perfect horizontal centering */
         width: 30.5vw; /* 30% of the viewport width */
         height: 30.5vw; /* Equal to width, keeping it circular */
-        max-width: 350px; /* Cap the maximum size */
-        max-height: 350px; /* Cap the maximum size */
+        max-width: 352px; /* Cap the maximum size */
+        max-height: 352px; /* Cap the maximum size */
         border-radius: 50%;
         animation: distort 10s infinite linear;
         filter: url(#distortion-filter); /* Apply SVG distortion filter */
@@ -70,14 +70,28 @@
         transform: translateX(-50%); /* Adjust for perfect horizontal centering */
         width: 31vw; /* 30% of the viewport width */
         height: 31vw; /* Equal to width, keeping it circular */
-        max-width: 351px; /* Cap the maximum size */
-        max-height: 351px; /* Cap the maximum size */
+        max-width: 360px; /* Cap the maximum size */
+        max-height: 360px; /* Cap the maximum size */
         border-radius: 50%;
-        animation: distort_2 10s infinite linear;
+        animation: distort_2 12s infinite linear;
         filter: url(#distortion-filter); /* Apply SVG distortion filter */
     }
-
-
+    .distorted-bg_3 {
+    background: url('BG_top.jpg') no-repeat;
+    background-size: cover;
+    position: fixed; /* Fixed to the viewport */
+    top: -180%; /* Padding from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+    width: 32.0vw; /* 30% of the viewport width */
+    height: 32.0vw; /* Equal to width, keeping it circular */
+    max-width: 370.5px; /* Cap the maximum size */
+    max-height: 370.5px; /* Cap the maximum size */
+    border-radius: 50%;
+    animation: distort_2 5s infinite linear;
+    filter: url(#distortion-filter); /* Apply SVG distortion filter */
+    opacity: 0.5; /* Adjust transparency */
+}
         @keyframes distort {
             0% {
                 transform: translate(-50%, -50%) rotate(0deg);
@@ -92,6 +106,14 @@
             }
             100% {
                 transform: translate(-50%, -50%) rotate(-360deg);
+            }
+        }
+        @keyframes distort_3 {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(-720deg);
             }
         }
          /* Black Hole Circle */
@@ -111,16 +133,17 @@
 }
 
       
-        /* Background */
         .background {
             background-image: url('bg_test1.png');
             background-size: cover;
-            background-position: center;
+            background-position: top center; /* Ensures the top is always aligned with the window */
             background-repeat: no-repeat;
-            height: 100vh; /* 100% viewport height */
+            height: 100vh; /* Full viewport height */
+            width: 100%; /* Full viewport width */
             visibility: hidden;
             animation: fadeIn 2s ease-out forwards;
         }
+
 
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -213,6 +236,7 @@
     </div>
     <div class="black-hole-container">
         <!-- Distorted Background -->
+        <div class="distorted-bg_3"></div>
         <div class="distorted-bg_2"></div>
         <div class="distorted-bg"></div>
         <!-- Black Circle (Black Hole) -->
