@@ -14,7 +14,7 @@
             font-family: Arial, sans-serif;
             height: 100%;
             color: #fff;
-            background-color: #000;
+            background-color: #000; /* Fallback background color */
             overflow-x: hidden;
         }
 
@@ -36,31 +36,47 @@
             0% { opacity: 1; }
             100% { opacity: 0; visibility: hidden; }
         }
-
         .black-hole-container {
-            position: sticky;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30.5vw;
-            height: 30.5vw;
-            max-width: 350px;
-            max-height: 350px;
-        }
+    position: sticky; /* Change from 'fixed' to 'absolute' */
+    top: 10%; /* Padding from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+    width: 30.5vw;
+    height: 30.5vw;
+    max-width: 350px;
+    max-height: 350px;
+}
+    .distorted-bg {
+        background: url('BG_top.jpg') no-repeat;
+        background-size: cover;
+        position: fixed; /* Fixed to the viewport */
+        top: -180%; /* Padding from the top */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+        width: 30.5vw; /* 30% of the viewport width */
+        height: 30.5vw; /* Equal to width, keeping it circular */
+        max-width: 350px; /* Cap the maximum size */
+        max-height: 350px; /* Cap the maximum size */
+        border-radius: 50%;
+        animation: distort 10s infinite linear;
+        filter: url(#distortion-filter); /* Apply SVG distortion filter */
+    }
+    .distorted-bg_2 {
+        background: url('BG_top.jpg') no-repeat;
+        background-size: cover;
+        position: fixed; /* Fixed to the viewport */
+        top: -180%; /* Padding from the top */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+        width: 31vw; /* 30% of the viewport width */
+        height: 31vw; /* Equal to width, keeping it circular */
+        max-width: 351px; /* Cap the maximum size */
+        max-height: 351px; /* Cap the maximum size */
+        border-radius: 50%;
+        animation: distort_2 10s infinite linear;
+        filter: url(#distortion-filter); /* Apply SVG distortion filter */
+    }
 
-        .distorted-bg {
-            background: url('BG_top.jpg') no-repeat;
-            background-size: cover;
-            position: fixed;
-            top: -180%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30.5vw;
-            height: 30.5vw;
-            max-width: 350px;
-            max-height: 350px;
-            border-radius: 50%;
-        }
 
         @keyframes distort {
             0% {
@@ -70,27 +86,38 @@
                 transform: translate(-50%, -50%) rotate(360deg);
             }
         }
-
-        .black-circle {
-            position: fixed;
-            top: -180%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 30vw;
-            height: 30vw;
-            max-width: 350px;
-            max-height: 350px;
-            background: black;
-            border-radius: 50%;
-            z-index: 2;
+        @keyframes distort_2 {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(-360deg);
+            }
         }
+         /* Black Hole Circle */
+/* Black Hole Circle */
+.black-circle {
+    position: fixed;  /* Change from 'absolute' to 'fixed' */
+    top: -180%;  /* Keep it at 40% from the top */
+    left: 50%;  /* Keep it at 50% horizontally */
+    transform: translate(-50%, -50%); /* Center it */
+    width: 30vw; /* 30% of the viewport width */
+    height: 30vw; /* Equal to width, keeping it circular */
+    max-width: 350px; /* Cap the maximum size */
+    max-height: 350px; /* Cap the maximum size */
+    background: black;
+    border-radius: 50%;
+    z-index: 2; /* Ensure it stays on top of other elements */
+}
 
+      
+        /* Background */
         .background {
             background-image: url('bg_test1.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            height: 100vh; /* 100% viewport height */
             visibility: hidden;
             animation: fadeIn 2s ease-out forwards;
         }
@@ -99,7 +126,8 @@
             from { opacity: 0; }
             to { opacity: 1; visibility: visible; }
         }
-        
+
+        /* Content */
         .content {
             text-align: center;
             padding: 5rem 1rem;
@@ -114,6 +142,7 @@
             font-size: 1.25rem;
         }
 
+        /* Panels */
         .panels {
             position: relative;
             z-index: 10;
@@ -140,12 +169,14 @@
             transform: scale(1.03);
         }
 
+        /* Icons for Visual Appeal */
         .panel i {
             font-size: 2rem;
             margin-bottom: 10px;
             color: #00ff00;
         }
 
+        /* Footer */
         .footer {
             background-color: rgba(0, 0, 0, 0.8);
             color: #ccc;
@@ -154,6 +185,7 @@
             font-size: 1rem;
         }
 
+        /* Responsive Design */
         @media (max-width: 768px) {
             h1 { font-size: 2.5rem; }
             p { font-size: 1.1rem; }
@@ -167,22 +199,27 @@
     </style>
 </head>
 <body>
+    <!-- Preloader -->
     <div class="preloader">
         <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
+    <!-- Background Section -->
     <div class="background">
         <div class="content">
             <h1>Welcome to My Page</h1>
             <p>This is hosted using GitHub Pages!</p>
         </div>
     </div>
-
     <div class="black-hole-container">
+        <!-- Distorted Background -->
+        <div class="distorted-bg_2"></div>
         <div class="distorted-bg"></div>
+        <!-- Black Circle (Black Hole) -->
         <div class="black-circle"></div>
     </div>
 
+    <!-- Panels Section -->
     <div class="panels">
         <div class="panel">
             <i class="fas fa-code"></i>
@@ -201,25 +238,28 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(function() {
-            var rotation = 0, 
-                scrollLoc = $(document).scrollTop();
+        const circleMask = document.querySelector('.circle-mask');
 
-            $(window).scroll(function() {
-                var newLoc = $(document).scrollTop();
-                var diff = scrollLoc - newLoc;
-                rotation += diff;
-                scrollLoc = newLoc;
+        let scrollTimeout;
+        let lastScrollY = window.scrollY;
 
-                var rotationStr = "rotate(" + rotation + "deg)";
-                $(".distorted-bg").css({
-                    "-webkit-transform": rotationStr,
-                    "-moz-transform": rotationStr,
-                    "transform": rotationStr
-                });
-            });
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            // Calculate rotation based on scroll distance
+            const rotation = (currentScrollY - lastScrollY) * 0.1;
+            const currentRotation = parseFloat(getComputedStyle(circleMask).transform.split(',')[1]) || 0;
+
+            circleMask.style.transform = `translate(-50%, -50%) rotate(${rotation + currentRotation}deg)`;
+
+            // Clear timeout to detect stop
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                circleMask.style.animation = 'none';
+            }, 200);
+
+            lastScrollY = currentScrollY;
         });
     </script>
 </body>
