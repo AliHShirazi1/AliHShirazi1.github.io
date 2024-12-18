@@ -3,93 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
+    <title>My GitHub Page with Circle Mask</title>
+    <meta name="description" content="Welcome to my GitHub Page showcasing content and projects.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
     <style>
-        /* Global styles */
+        /* General Reset and Global Styles */
         body, html {
             margin: 0;
             padding: 0;
-            overflow: auto; /* Enable scrolling */
             font-family: Arial, sans-serif;
             height: 100%;
+            color: #fff;
             background-color: #000; /* Fallback background color */
+            overflow-x: hidden;
         }
 
         /* Preloader */
         .preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
-            font-size: 2rem;
-            z-index: 9999;
-            display: none; /* Hidden initially */
+            font-size: 1.8rem;
+            z-index: 10000;
+            animation: fadeOut 2s forwards;
         }
 
-        /* Background image */
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+        .black-hole-container {
+    position: sticky; /* Change from 'fixed' to 'absolute' */
+    top: 10%; /* Padding from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+    width: 30.5vw;
+    height: 30.5vw;
+    max-width: 350px;
+    max-height: 350px;
+}
+    .distorted-bg {
+        background: url('BG_top.jpg') no-repeat;
+        background-size: cover;
+        position: fixed; /* Fixed to the viewport */
+        top: -180%; /* Padding from the top */
+        left: 50%; /* Center horizontally */
+        transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+        width: 30.5vw; /* 30% of the viewport width */
+        height: 30.5vw; /* Equal to width, keeping it circular */
+        max-width: 350px; /* Cap the maximum size */
+        max-height: 350px; /* Cap the maximum size */
+        border-radius: 50%;
+        animation: distort 10s infinite linear;
+        filter: url(#distortion-filter); /* Apply SVG distortion filter */
+    }
+
+
+        @keyframes distort {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+         /* Black Hole Circle */
+/* Black Hole Circle */
+.black-circle {
+    position: fixed;  /* Change from 'absolute' to 'fixed' */
+    top: -180%;  /* Keep it at 40% from the top */
+    left: 50%;  /* Keep it at 50% horizontally */
+    transform: translate(-50%, -50%); /* Center it */
+    width: 30vw; /* 30% of the viewport width */
+    height: 30vw; /* Equal to width, keeping it circular */
+    max-width: 350px; /* Cap the maximum size */
+    max-height: 350px; /* Cap the maximum size */
+    background: black;
+    border-radius: 50%;
+    z-index: 2; /* Ensure it stays on top of other elements */
+}
+
+      
+        /* Background */
         .background {
             background-image: url('bg_test1.png');
-            background-size: cover; /* Ensures the entire image is visible */
-            background-position: center center; /* Centers the image */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
-            height: 200vh; /* Adjusts the height automatically based on the image's aspect ratio */
-            visibility: hidden; /* Hide the background initially */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh; /* 100% viewport height */
+            visibility: hidden;
+            animation: fadeIn 2s ease-out forwards;
         }
 
-        /* Content container */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; visibility: visible; }
+        }
+
+        /* Content */
         .content {
             text-align: center;
-            color: #ffffff; /* White text */
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for readability */
-            padding: 20px; /* Add space inside the content */
+            padding: 5rem 1rem;
         }
 
-        /* Text styling */
         h1 {
             font-size: 3rem;
             margin: 0;
         }
 
         p {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        /* Panels */
+        .panels {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 50px 1rem;
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 30px;
+            width: 90%;
+            max-width: 700px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: scale(1.03);
+        }
+
+        /* Icons for Visual Appeal */
+        .panel i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #00ff00;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ccc;
+            padding: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            p { font-size: 1.1rem; }
+            .panel { padding: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2rem; }
+            p { font-size: 1rem; }
         }
     </style>
 </head>
 <body>
     <!-- Preloader -->
     <div class="preloader">
-        Loading background image...
+        <i class="fas fa-spinner fa-spin"></i> Loading...
     </div>
 
-    <!-- Background container -->
+    <!-- Background Section -->
     <div class="background">
         <div class="content">
             <h1>Welcome to My Page</h1>
             <p>This is hosted using GitHub Pages!</p>
         </div>
     </div>
+    <div class="black-hole-container">
+        <!-- Distorted Background -->
+        <div class="distorted-bg"></div>
+        <!-- Black Circle (Black Hole) -->
+        <div class="black-circle"></div>
+    </div>
+
+    <!-- Panels Section -->
+    <div class="panels">
+        <div class="panel">
+            <i class="fas fa-code"></i>
+            <h2>Panel 1</h2>
+            <p>Discover projects, code snippets, and technical blogs to enhance your knowledge.</p>
+        </div>
+        <div class="panel">
+            <i class="fas fa-laptop-code"></i>
+            <h2>Panel 2</h2>
+            <p>Explore my work on GitHub repositories and contribute to open-source projects.</p>
+        </div>
+        <div class="panel">
+            <i class="fas fa-lightbulb"></i>
+            <h2>Panel 3</h2>
+            <p>Innovative solutions and ideas at your fingertips!</p>
+        </div>
+    </div>
 
     <script>
-        // Wait for the background image to load
-        const backgroundImage = new Image();
-        backgroundImage.src = 'bg_test1.png'; // Set the source of the image
+        const circleMask = document.querySelector('.circle-mask');
 
-        backgroundImage.onload = () => {
-            // Image has loaded, hide the preloader and show the background
-            document.querySelector('.preloader').style.display = 'none';
-            document.querySelector('.background').style.visibility = 'visible';
-        };
+        let scrollTimeout;
+        let lastScrollY = window.scrollY;
 
-        backgroundImage.onerror = () => {
-            // In case the image fails to load, you can handle it here
-            document.querySelector('.preloader').innerText = 'Failed to load background image.';
-        };
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+
+            // Calculate rotation based on scroll distance
+            const rotation = (currentScrollY - lastScrollY) * 0.1;
+            const currentRotation = parseFloat(getComputedStyle(circleMask).transform.split(',')[1]) || 0;
+
+            circleMask.style.transform = `translate(-50%, -50%) rotate(${rotation + currentRotation}deg)`;
+
+            // Clear timeout to detect stop
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                circleMask.style.animation = 'none';
+            }, 200);
+
+            lastScrollY = currentScrollY;
+        });
     </script>
 </body>
 </html>
