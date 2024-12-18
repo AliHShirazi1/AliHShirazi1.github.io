@@ -36,58 +36,48 @@
             0% { opacity: 1; }
             100% { opacity: 0; visibility: hidden; }
         }
+
         .black-hole-container {
-    position: sticky; /* Change from 'fixed' to 'absolute' */
-    top: 10%; /* Padding from the top */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust for perfect horizontal centering */
-    width: 30.5vw;
-    height: 30.5vw;
-    max-width: 350px;
-    max-height: 350px;
-}
-    .distorted-bg {
-        background: url('BG_top.jpg') no-repeat;
-        background-size: cover;
-        position: fixed; /* Fixed to the viewport */
-        top: -180%; /* Padding from the top */
-        left: 50%; /* Center horizontally */
-        transform: translateX(-50%); /* Adjust for perfect horizontal centering */
-        width: 30.5vw; /* 30% of the viewport width */
-        height: 30.5vw; /* Equal to width, keeping it circular */
-        max-width: 350px; /* Cap the maximum size */
-        max-height: 350px; /* Cap the maximum size */
-        border-radius: 50%;
-        animation: distort 10s infinite linear;
-        filter: url(#distortion-filter); /* Apply SVG distortion filter */
-    }
-
-
-        @keyframes distort {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
-            }
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
-            }
+            position: sticky; /* Change from 'fixed' to 'absolute' */
+            top: 10%; /* Padding from the top */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+            width: 30.5vw;
+            height: 30.5vw;
+            max-width: 350px;
+            max-height: 350px;
         }
-         /* Black Hole Circle */
-/* Black Hole Circle */
-.black-circle {
-    position: fixed;  /* Change from 'absolute' to 'fixed' */
-    top: -180%;  /* Keep it at 40% from the top */
-    left: 50%;  /* Keep it at 50% horizontally */
-    transform: translate(-50%, -50%); /* Center it */
-    width: 30vw; /* 30% of the viewport width */
-    height: 30vw; /* Equal to width, keeping it circular */
-    max-width: 350px; /* Cap the maximum size */
-    max-height: 350px; /* Cap the maximum size */
-    background: black;
-    border-radius: 50%;
-    z-index: 2; /* Ensure it stays on top of other elements */
-}
 
-      
+        .distorted-bg {
+            background: url('BG_top.jpg') no-repeat;
+            background-size: cover;
+            position: fixed; /* Fixed to the viewport */
+            top: -180%; /* Padding from the top */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for perfect horizontal centering */
+            width: 30.5vw; /* 30% of the viewport width */
+            height: 30.5vw; /* Equal to width, keeping it circular */
+            max-width: 350px; /* Cap the maximum size */
+            max-height: 350px; /* Cap the maximum size */
+            border-radius: 50%;
+            filter: url(#distortion-filter); /* Apply SVG distortion filter */
+        }
+
+        /* Black Hole Circle */
+        .black-circle {
+            position: fixed;  /* Change from 'absolute' to 'fixed' */
+            top: -180%;  /* Keep it at 40% from the top */
+            left: 50%;  /* Keep it at 50% horizontally */
+            transform: translate(-50%, -50%); /* Center it */
+            width: 30vw; /* 30% of the viewport width */
+            height: 30vw; /* Equal to width, keeping it circular */
+            max-width: 350px; /* Cap the maximum size */
+            max-height: 350px; /* Cap the maximum size */
+            background: black;
+            border-radius: 50%;
+            z-index: 2; /* Ensure it stays on top of other elements */
+        }
+
         /* Background */
         .background {
             background-image: url('bg_test1.png');
@@ -215,27 +205,23 @@
     </div>
 
     <script>
-        const circleMask = document.querySelector('.circle-mask');
+        $(function() {
+            var rotation = 0, 
+                scrollLoc = $(document).scrollTop();
 
-        let scrollTimeout;
-        let lastScrollY = window.scrollY;
+            $(window).scroll(function() {
+                var newLoc = $(document).scrollTop();
+                var diff = scrollLoc - newLoc;
+                rotation += diff;
+                scrollLoc = newLoc;
 
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-
-            // Calculate rotation based on scroll distance
-            const rotation = (currentScrollY - lastScrollY) * 0.1;
-            const currentRotation = parseFloat(getComputedStyle(circleMask).transform.split(',')[1]) || 0;
-
-            circleMask.style.transform = `translate(-50%, -50%) rotate(${rotation + currentRotation}deg)`;
-
-            // Clear timeout to detect stop
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(() => {
-                circleMask.style.animation = 'none';
-            }, 200);
-
-            lastScrollY = currentScrollY;
+                var rotationStr = "rotate(" + rotation + "deg)";
+                $(".distorted-bg").css({
+                    "-webkit-transform": rotationStr,
+                    "-moz-transform": rotationStr,
+                    "transform": rotationStr
+                });
+            });
         });
     </script>
 </body>
