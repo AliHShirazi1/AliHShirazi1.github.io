@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0A0A0A" />
+  <title>Ali Heidari Shirazi — Portfolio</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍🔬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Source+Serif+Pro:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* --- GLOBAL FIX --- */
+    * {
+        box-sizing: border-box;
+    }
+    /* --- SCIENTIFIC DARK THEME --- */
+    :root {
+      --bg-dark: #0A0A0A;
+      --card-bg: #111111;
+      --card-border: #27272a;
+      --text-light: #a1a1aa;
+      --text-heading: #fafafa;
+      --text-subtle: #71717a;
+      --accent-sky: #38bdf8;
+      --accent-emerald: #34d399;
+      --accent-amber: #f59e0b;
+      --accent-violet: #8b5cf6;
+    }
+
+    html {
+      background-color: var(--bg-dark);
+    }
+    
+    body {
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      background-color: transparent;
+    }
+    
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .font-serif {
+      font-family: 'Source Serif Pro', serif;
+    }
+
+    .card {
+      background-color: rgba(17, 17, 17, 0.55);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
+    }
+    
+    .bento-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+    .bento-item:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent-sky);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    .highlight-link {
+      position: relative;
+      display: inline-block;
+      color: var(--text-heading);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .highlight-link::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--accent-sky);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s ease-out;
+    }
+    .highlight-link:hover {
+      color: var(--accent-sky);
+    }
+    .highlight-link:hover::after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+    
+    .gradient-text {
+        background: linear-gradient(to right, #a1a1aa, #fafafa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .status-tag {
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.75rem;
+        border-radius: 9999px;
+    }
+    .status-published { background-color: rgba(52, 211, 153, 0.1); color: var(--accent-emerald); }
+    .status-ongoing { background-color: rgba(245, 158, 11, 0.1); color: var(--accent-amber); }
+    .status-under-review { background-color: rgba(139, 92, 246, 0.1); color: var(--accent-violet); }
+
+    .btn-primary {
+      background-color: var(--accent-sky);
+      color: #0A0A0A;
+      font-weight: 600;
+      border-radius: 9999px;
+      padding: 0.75rem 1.5rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.25);
+    }
+
+    #glCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; 
+      opacity: 0.7;
+      transition: opacity 0.5s ease;
+    }
+
+    .content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Animation Disabling */
+    body.animations-disabled * {
+      transition-duration: 0s !important;
+      animation: none !important;
+    }
+    body.animations-disabled #glCanvas {
+      opacity: 0;
+    }
+
+    /* Modal Styles */
+    #research-modal {
+      transition: opacity 0.3s ease-in-out;
+    }
+    #research-modal .modal-content {
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    
+    #fractal-info-popup.popup-visible {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+    }
+    
+    .research-card img {
+        aspect-ratio: 10 / 13;
+        object-fit: cover;
+    }
+  </style>
+</head>
+<body class="overflow-x-hidden">
+  
+  <canvas id="glCanvas"></canvas>
+
+  <button id="fractal-info-btn" class="fixed top-4 right-4 z-20 w-10 h-10 rounded-full bg-zinc-800/50 backdrop-blur-sm text-zinc-300 flex items-center justify-center text-lg font-serif font-bold border border-zinc-700 hover:bg-zinc-700 transition-colors">i</button>
+
+  <div id="fractal-info-popup" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity">
+    <div class="card rounded-xl p-6 max-w-md w-full relative">
+      <button id="close-fractal-info" class="absolute top-3 right-4 text-zinc-500 hover:text-zinc-200 text-3xl">&times;</button>
+      <h3 class="font-serif text-xl font-bold text-zinc-200 mb-3">About the Background</h3>
+      <p class="text-zinc-400 text-sm">
+        The dynamic animation you see is a 3D Mandelbulb fractal, rendered in real-time directly in your browser. It uses a technique called raymarching within a WebGL fragment shader. This allows for the generation of a complex, infinite 3D world without traditional polygons, calculated for every pixel on your screen.
+      </p>
+    </div>
+  </div>
+
+  <div class="content-wrapper max-w-4xl mx-auto px-6 py-12 md:py-20">
+
+    <!-- Header Section -->
+    <header class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-16 md:mb-24">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight font-serif gradient-text">Ali Heidari Shirazi</h1>
+        <p class="text-lg text-zinc-400 mt-2">Ph.D. in Mechanical Engineering</p>
+        <div class="mt-4 max-w-xl space-y-4 text-zinc-300">
+            <p>
+                I am a Ph.D. candidate and Graduate Research Assistant at the University of Tennessee, Knoxville, specializing in the dynamics of mechanical metamaterials. My work focuses on understanding how disorder and nonlinearities affect wave propagation characteristics.
+            </p>
+            <p>
+                My research involves using time-domain simulations, spacetime Fourier transforms, and C++ toolsets to analyze complex phenomena like chaos in bandgaps and wave diffraction. My goal is to resolve challenges in the homogenization of dispersive media to unlock new possibilities in vibration suppression and wave guiding.
+            </p>
+        </div>
+        <div class="mt-6 flex items-center gap-4">
+          <a href="#contact" class="btn-primary">Get in Touch</a>
+          <a href="./Ali_Heidari_Shirazi_CV.pdf" target="_blank" class="highlight-link">View CV</a>
+        </div>
+      </div>
+      <div class="flex-shrink-0">
+        <img 
+          src="https://placehold.co/160x160/111111/38bdf8?text=AHS" 
+          alt="Ali Heidari Shirazi" 
+          class="rounded-full w-32 h-32 md:w-40 md:h-40 border-2 border-zinc-800 shadow-lg"
+        >
+      </div>
+    </header>
+
+    <main>
+      <!-- Research Focus Section -->
+      <section id="research" class="mb-16 md:mb-24">
+        <h2 class="text-3xl font-bold font-serif text-zinc-200 mb-8">Research Focus</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Research Card 1 -->
+          <div class="research-card group cursor-pointer" data-title="Disordered Metamaterials" data-description="Investigating the effects of positional, material, and geometrical disorder on Bragg-scattering and locally resonant metamaterials to understand and predict their complex wave propagation behavior." data-status="Published" data-img-src="https://placehold.co/400x520/0f172a/38bdf8?text=Disorder+Effects">
+            <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
+              <div>
+                <div class="overflow-hidden rounded-lg mb-4">
+                  <img src="https://placehold.co/400x520/0f172a/38bdf8?text=Disorder+Effects" alt="Abstract representation of disordered metamaterials" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+                <h3 class="font-semibold text-zinc-200">Disordered Metamaterials</h3>
+              </div>
+              <span class="status-tag status-published mt-3 self-start">Published</span>
+            </div>
+          </div>
+          <!-- Research Card 2 -->
+          <div class="research-card group cursor-pointer" data-title="Nonlinear Dynamics" data-description="Analyzing the influence of chaos, bifurcation, and dead-zone nonlinearities on the bandgaps of mechanical systems through advanced time-domain simulations and analytical models." data-status="Published" data-img-src="https://placehold.co/400x520/064e3b/34d399?text=Nonlinearity">
+            <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
+              <div>
+                <div class="overflow-hidden rounded-lg mb-4">
+                  <img src="https://placehold.co/400x520/064e3b/34d399?text=Nonlinearity" alt="Abstract representation of nonlinear dynamics" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+                <h3 class="font-semibold text-zinc-200">Nonlinear Dynamics</h3>
+              </div>
+              <span class="status-tag status-published mt-3 self-start">Published</span>
+            </div>
+          </div>
+          <!-- Research Card 3 -->
+          <div class="research-card group cursor-pointer" data-title="Wave Propagation" data-description="Analyzing diffraction mechanisms and higher order mode generation in layered media, and designing multi-beam structures that enable advanced dynamic modes and broadened attenuation ranges." data-status="Ongoing" data-img-src="https://placehold.co/400x520/78350f/f59e0b?text=Wave+Physics">
+            <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
+              <div>
+                <div class="overflow-hidden rounded-lg mb-4">
+                  <img src="https://placehold.co/400x520/78350f/f59e0b?text=Wave+Physics" alt="Abstract representation of wave propagation" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+                <h3 class="font-semibold text-zinc-200">Wave Propagation</h3>
+              </div>
+              <span class="status-tag status-ongoing mt-3 self-start">Ongoing</span>
+            </div>
+          </div>
+          <!-- Research Card 4 -->
+          <div class="research-card group cursor-pointer" data-title="Computational Methods" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials." data-status="Ongoing" data-img-src="https://placehold.co/400x520/5b21b6/a78bfa?text=Computation">
+            <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
+              <div>
+                <div class="overflow-hidden rounded-lg mb-4">
+                  <img src="https://placehold.co/400x520/5b21b6/a78bfa?text=Computation" alt="Abstract representation of computational methods" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                </div>
+                <h3 class="font-semibold text-zinc-200">Computational Methods</h3>
+              </div>
+              <span class="status-tag status-ongoing mt-3 self-start">Ongoing</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="mb-16 md:mb-24">
+          <h2 class="text-3xl font-bold font-serif text-zinc-200 mb-8">Skills</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-sky-400 font-medium mb-2">AI & Machine Learning</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>LLMs, RAG, AI Agents</li>
+                  <li>CNN, TensorFlow</li>
+                </ul>
+              </div>
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-emerald-400 font-medium mb-2">Programming Languages</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>Python</li>
+                  <li>C++ (OOP)</li>
+                  <li>HTML</li>
+                </ul>
+              </div>
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-amber-400 font-medium mb-2">Engineering Software</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>COMSOL (Scripting)</li>
+                  <li>SolidWorks, Ansys</li>
+                  <li>Recurdyn, MSC ADAMS</li>
+                </ul>
+              </div>
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-violet-400 font-medium mb-2">Mathematical Software</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>Matlab, Simulink</li>
+                  <li>Maple</li>
+                  <li>Wolfram Mathematica</li>
+                </ul>
+              </div>
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-rose-400 font-medium mb-2">Design & Visualization</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>Adobe Creative Suite</li>
+                  <li>3D Studio Max</li>
+                </ul>
+              </div>
+              <div class="bento-item card rounded-xl p-6">
+                <div class="text-sm text-zinc-500 font-medium mb-2">Languages</div>
+                <ul class="space-y-1 text-sm text-zinc-400 list-disc list-inside">
+                  <li>Persian (Native)</li>
+                  <li>English (Fluent)</li>
+                </ul>
+              </div>
+          </div>
+      </section>
+
+      <!-- Publications Section -->
+      <section id="publications" class="mb-16 md:mb-24">
+        <h2 class="text-3xl font-bold font-serif text-zinc-200 mb-8">Journal Publications</h2>
+        
+        <div id="publications-container" class="space-y-6">
+          <!-- Publications will be injected here -->
+        </div>
+
+        <div class="mt-8 flex justify-between items-center">
+          <button id="prevPageBtn" class="card rounded-lg px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Previous</button>
+          <span id="pageIndicator" class="text-sm text-zinc-500"></span>
+          <button id="nextPageBtn" class="card rounded-lg px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Next</button>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact">
+        <h2 class="text-3xl font-bold font-serif text-zinc-200 mb-8">Let's Connect</h2>
+        <div class="card rounded-xl p-8">
+          <p class="text-lg text-zinc-300 text-center max-w-2xl mx-auto">
+            I'm always open to discussing research, collaborating on interesting projects, or just chatting about computational mechanics and wave physics.
+          </p>
+          <div class="mt-8 flex justify-center items-center gap-6 flex-wrap">
+            <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link text-lg">Email</a>
+            <span class="text-zinc-700">&bull;</span>
+            <a href="https://www.linkedin.com/in/alihshirazi/" target="_blank" class="highlight-link text-lg">LinkedIn</a>
+            <span class="text-zinc-700">&bull;</span>
+            <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link text-lg">Google Scholar</a>
+            <span class="text-zinc-700">&bull;</span>
+            <a href="https://www.webofscience.com/wos/author/record/HJV-5658-2023" target="_blank" class="highlight-link text-lg">Web of Science</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center mt-16 md:mt-24 text-zinc-500 text-sm space-y-4">
+      <button id="toggleAnimationsBtn" class="card rounded-full px-4 py-2 text-xs font-medium hover:bg-zinc-800 transition-colors">Disable Animations</button>
+      <p>&copy; 2025 Ali Heidari Shirazi. Designed with care.</p>
+    </footer>
+
+  </div>
+
+  <!-- Research Card Modal -->
+  <div id="research-modal" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
+    <div id="modal-content" class="modal-content card rounded-xl w-full max-w-2xl p-6 relative transform scale-95 opacity-0">
+      <button id="close-modal-btn" class="absolute top-4 right-4 text-zinc-500 hover:text-zinc-200 transition-colors z-10 text-4xl leading-none">&times;</button>
+      <div class="grid md:grid-cols-2 gap-6 items-start">
+        <img id="modal-img" src="" alt="" class="rounded-lg w-full h-auto object-cover">
+        <div>
+          <div class="flex items-center gap-4 mb-3">
+            <h2 id="modal-title" class="text-2xl font-bold font-serif text-zinc-200"></h2>
+            <span id="modal-status-tag" class="status-tag"></span>
+          </div>
+          <p id="modal-description" class="text-zinc-300"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec2 a_position;
+    void main() {
+      gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+  </script>
+
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;
+    uniform vec2 u_resolution;
+    uniform float u_time;
+    uniform float u_zoom;
+    uniform vec2 u_rot;
+
+    #define MAX_STEPS 20
+    #define MAX_DIST 35.0
+    #define SURF_DIST 0.001
+
+    mat2 rot(float a) {
+        float c = cos(a), s = sin(a);
+        return mat2(c, -s, s, c);
+    }
+
+    vec3 rotate(vec3 p, vec2 angle) {
+        p.xz = rot(angle.x) * p.xz;
+        p.yz = rot(angle.y) * p.yz;
+        return p;
+    }
+
+    float mandelbulbDE(vec3 pos, out float iter) {
+        vec3 z = pos;
+        float dr = 1.0;
+        float r = 0.0;
+        iter = 0.0;
+        float power = 6.0 + 4.0 * cos(u_time * 0.2 + 3.14159) * (1.0 + 0.12 * u_zoom);
+        for (int i = 0; i < 5; i++) { 
+            r = length(z);
+            if (r > 2.2) break;
+            iter += 1.0;
+            float theta = acos(z.z / r);
+            float phi = atan(z.y, z.x);
+            dr = pow(r, power - 1.0) * power * dr + 1.0;
+            float zr = pow(r, power);
+            theta *= power;
+            phi *= power;
+            z = zr * vec3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
+            z += pos;
+        }
+        return 0.5 * log(r) * r / dr;
+    }
+
+    vec3 getNormalMandelbulb(vec3 p) {
+        float it;
+        vec2 e = vec2(0.001, 0.0);
+        float d = mandelbulbDE(p, it);
+        vec3 n = d - vec3(
+            mandelbulbDE(p - e.xyy, it),
+            mandelbulbDE(p - e.yxy, it),
+            mandelbulbDE(p - e.yyx, it)
+        );
+        return normalize(n);
+    }
+    
+    vec3 paletteMandelbulb(float t) {
+      vec3 a = vec3(0.5, 0.5, 0.5);
+      vec3 b = vec3(0.5, 0.5, 0.5);
+      vec3 c = vec3(1.0, 1.0, 1.0);
+      vec3 d = vec3(0.10, 0.20, 0.30);
+      return a + b*cos( 6.28318*(c*t+d) );
+    }
+
+    void main() {
+        vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / u_resolution.y;
+        vec3 ro = vec3(0.0, 0.0, -3.0 * u_zoom);
+        vec3 rd = normalize(vec3(uv, 1.0));
+
+        ro = rotate(ro, u_rot);
+        rd = rotate(rd, u_rot);
+
+        float iter;
+        float d = 0.0;
+        // Raymarch loop
+        for(int i=0; i < MAX_STEPS; i++) {
+            vec3 p = ro + rd * d;
+            float ds = mandelbulbDE(p, iter);
+            d += ds;
+            if(ds < SURF_DIST || d > MAX_DIST) break;
+        }
+
+        vec3 col = vec3(0.0);
+        if (d < MAX_DIST) {
+            vec3 p = ro + rd * d;
+            vec3 n = getNormalMandelbulb(p);
+            vec3 L1 = normalize(vec3(1.5, 1.8, -0.8));
+            float dif = clamp(dot(n, L1), 0.0, 1.0);
+            vec3 base = paletteMandelbulb(iter / 12.0);
+            col = base * (0.2 + 0.8 * dif);
+        }
+
+        col = pow(col, vec3(0.4545));
+        gl_FragColor = vec4(col, 1.0);
+    }
+  </script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      // --- Animation Toggle ---
+      const toggleBtn = document.getElementById('toggleAnimationsBtn');
+      let animationsEnabled = true;
+
+      toggleBtn.addEventListener('click', () => {
+        animationsEnabled = !animationsEnabled;
+        document.body.classList.toggle('animations-disabled', !animationsEnabled);
+        toggleBtn.textContent = animationsEnabled ? 'Disable Animations' : 'Enable Animations';
+      });
+
+      // --- Fractal Info Popup ---
+      const infoBtn = document.getElementById('fractal-info-btn');
+      const infoPopup = document.getElementById('fractal-info-popup');
+      const closeInfoPopupBtn = document.getElementById('close-fractal-info');
+
+      infoBtn.addEventListener('click', () => {
+          infoPopup.classList.add('popup-visible');
+      });
+
+      closeInfoPopupBtn.addEventListener('click', () => {
+          infoPopup.classList.remove('popup-visible');
+      });
+
+      infoPopup.addEventListener('click', (e) => {
+          if (e.target === infoPopup) {
+              infoPopup.classList.remove('popup-visible');
+          }
+      });
+
+      // --- WebGL Fractal Background ---
+      const canvas = document.getElementById('glCanvas');
+      const gl = canvas.getContext('webgl', { antialias: true, alpha: false, powerPreference: 'high-performance' });
+
+      if (!gl) {
+        console.error("WebGL is not supported by your browser.");
+        return;
+      }
+      
+      const vertexShaderSource = document.getElementById('vertex-shader').textContent;
+      const fragmentShaderSource = document.getElementById('fragment-shader').textContent;
+      
+      const createShader = (gl, type, source) => {
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          console.error('Shader compilation error:', gl.getShaderInfoLog(shader));
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      };
+
+      const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+      const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+      
+      const program = gl.createProgram();
+      gl.attachShader(program, vertexShader);
+      gl.attachShader(program, fragmentShader);
+      gl.linkProgram(program);
+      
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.error('Program linking error:', gl.getProgramInfoLog(program));
+        return;
+      }
+      
+      const positionBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+      const positions = [-1, -1, 1, -1, -1, 1, 1, 1];
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+      
+      const positionAttributeLocation = gl.getAttribLocation(program, 'a_position');
+      gl.enableVertexAttribArray(positionAttributeLocation);
+      gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0);
+
+      const resolutionUniformLocation = gl.getUniformLocation(program, 'u_resolution');
+      const timeUniformLocation = gl.getUniformLocation(program, 'u_time');
+      const zoomUniformLocation = gl.getUniformLocation(program, "u_zoom");
+      const rotUniformLocation = gl.getUniformLocation(program, "u_rot");
+
+      let startTime = Date.now();
+      let rot = { x: 0.4, y: 0.4 };
+      let targetRot = { x: 0.4, y: 0.4 };
+
+      window.addEventListener('mousemove', (e) => {
+          targetRot.x = (e.clientX / window.innerWidth - 0.5) * 2.0;
+          targetRot.y = (e.clientY / window.innerHeight - 0.5) * 2.0;
+      });
+
+      function render() {
+        if (!animationsEnabled) {
+          requestAnimationFrame(render);
+          return;
+        }
+        
+        if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        }
+
+        gl.useProgram(program);
+        
+        const elapsedTime = (Date.now() - startTime) / 1000;
+        
+        rot.x += (targetRot.x - rot.x) * 0.05;
+        rot.y += (targetRot.y - rot.y) * 0.05;
+        
+        gl.uniform2f(resolutionUniformLocation, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        gl.uniform1f(timeUniformLocation, elapsedTime);
+        gl.uniform1f(zoomUniformLocation, 1.0);
+        gl.uniform2f(rotUniformLocation, rot.x, rot.y);
+        
+        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        requestAnimationFrame(render);
+      }
+      
+      render(); // Start the animation loop
+
+      // --- Research Card Modal Logic ---
+      const researchCards = document.querySelectorAll('.research-card');
+      const modal = document.getElementById('research-modal');
+      const modalContent = document.getElementById('modal-content');
+      const modalTitle = document.getElementById('modal-title');
+      const modalDescription = document.getElementById('modal-description');
+      const modalImg = document.getElementById('modal-img');
+      const modalStatusTag = document.getElementById('modal-status-tag');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+
+      const openModal = (card) => {
+        const title = card.dataset.title;
+        const description = card.dataset.description;
+        const imgSrc = card.dataset.imgSrc;
+        const status = card.dataset.status;
+
+        modalTitle.textContent = title;
+        modalDescription.textContent = description;
+        modalImg.src = imgSrc;
+        modalImg.alt = title;
+        modalStatusTag.textContent = status;
+        modalStatusTag.className = 'status-tag'; // Reset class
+        if (status === 'Published') {
+            modalStatusTag.classList.add('status-published');
+        } else if (status === 'Ongoing') {
+            modalStatusTag.classList.add('status-ongoing');
+        }
+
+        document.body.classList.add('modal-open');
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+            modalContent.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+      };
+
+      const closeModal = () => {
+        modalContent.classList.add('scale-95', 'opacity-0');
+        modal.classList.add('opacity-0');
+        setTimeout(() => {
+          modal.classList.add('pointer-events-none');
+          document.body.classList.remove('modal-open');
+        }, 300);
+      };
+
+      researchCards.forEach(card => {
+        card.addEventListener('click', () => openModal(card));
+      });
+
+      closeModalBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+
+      // --- Publications Data ---
+      const publicationsData = [
+        {
+          year: '2025',
+          journal: 'International Journal of Solids and Structures',
+          title: 'Dynamic homogenization of random elastodynamic metamaterials using space–time Fourier transform',
+          authors: 'Shirazi, A. H., Abedi, R., & Pal, R. K.',
+          link: 'https://doi.org/10.1016/j.ijsolstr.2025.113339',
+          status: 'Published'
+        },
+        {
+          year: '2020',
+          journal: 'The European Physical Journal Plus',
+          title: 'Physics of rack-and-pinion-inspired metamaterials with rotational resonators for broadband vibration suppression',
+          authors: 'Shirazi, A. H., & Sedighi, H. M.',
+          link: 'https://doi.org/10.1140/epjp/s13360-020-00286-y',
+          status: 'Published'
+        },
+        {
+          year: '2022',
+          journal: 'Journal of Thermal Stresses',
+          title: 'Thermoelastic behavior of an isotropic solid sphere under a non-uniform heat flow according to the MGT thermoelastic model',
+          authors: 'Abouelregal, A. E., Saidi, A., Mohammad-Sedighi, H., Shirazi, A. H., & Sofiyev, A. H.',
+          link: 'https://doi.org/10.1080/01495739.2021.2005497',
+          status: 'Published'
+        },
+        {
+          year: '2022',
+          journal: 'Silicon',
+          title: 'The effect of excess carrier on a semiconducting semi-infinite medium subject to a normal force by means of Green and Naghdi approach',
+          authors: 'Abouelregal, A. E., Sedighi, H. M., & Shirazi, A. H.',
+          link: 'https://doi.org/10.1007/s12633-021-01289-9',
+          status: 'Published'
+        },
+        {
+          year: '2022',
+          journal: 'Continuum Mechanics and Thermodynamics',
+          title: 'Computational analysis of an infinite magneto-thermoelastic solid...',
+          authors: 'Abouelregal, A. E., Mohammad-Sedighi, H., Shirazi, A. H., Malikan, M., & Eremeyev, V. A.',
+          link: 'https://doi.org/10.1007/s00161-021-00998-1',
+          status: 'Published'
+        },
+        {
+          year: '2021',
+          journal: 'Facta Universitatis, Series: Mechanical Engineering',
+          title: 'Passive atmospheric water harvesting utilizing an ancient Chinese ink slab',
+          authors: 'He, C.-H., Liu, C., He, J.-H., Shirazi, A. H., & Mohammad-Sedighi, H.',
+          link: 'https://doi.org/10.22190/fume201203001h',
+          status: 'Published'
+        },
+        {
+          year: '2021',
+          journal: 'Facta Universitatis, Series: Mechanical Engineering',
+          title: 'Temperature-dependent physical characteristics of the rotating nonlocal nanobeams...',
+          authors: 'Abouelregal, A. E., Mohammad-Sedighi, H., Faghidian, S. A., & Shirazi, A. H.',
+          link: 'https://doi.org/10.22190/fume201222024a',
+          status: 'Published'
+        },
+        {
+          year: '2021',
+          journal: 'Facta Universitatis, Series: Mechanical Engineering',
+          title: 'Hamiltonian-based frequency-amplitude formulation for nonlinear oscillators',
+          authors: 'He, J.-H., Hou, W.-F., Qie, N., Gepreel, K. A., Shirazi, a. H., & Sedighi, H. M.',
+          link: 'https://doi.org/10.22190/fume201205002h',
+          status: 'Published'
+        },
+        {
+          year: '2025',
+          journal: 'Submitted to Nonlinear Dynamics',
+          title: 'Performance Degradation in Locally Resonant Metamaterials Due to Dead-Zone Nonlinearity',
+          authors: 'Shirazi, A. H., Abedi, R.',
+          link: '#',
+          status: 'Under Review'
+        }
+      ];
+
+      // --- Publications Pagination ---
+      const publicationsContainer = document.getElementById('publications-container');
+      const prevPageBtn = document.getElementById('prevPageBtn');
+      const nextPageBtn = document.getElementById('nextPageBtn');
+      const pageIndicator = document.getElementById('pageIndicator');
+
+      let currentPage = 1;
+      const itemsPerPage = 4;
+      const totalPages = Math.ceil(publicationsData.length / itemsPerPage);
+
+      const renderPublications = () => {
+        publicationsContainer.innerHTML = '';
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const pageItems = publicationsData.slice(start, end);
+
+        pageItems.forEach(pub => {
+          const pubElement = document.createElement('div');
+          pubElement.className = 'card rounded-xl p-6 transition-transform duration-300 hover:-translate-y-1';
+          
+          let statusTag = '';
+          if (pub.status === 'Under Review') {
+            statusTag = `<span class="status-tag status-under-review ml-2">Under Review</span>`;
+          }
+
+          pubElement.innerHTML = `
+            <div class="flex justify-between items-start">
+              <p class="text-sm text-zinc-500">${pub.year} &bull; ${pub.journal}</p>
+              ${statusTag}
+            </div>
+            <h3 class="font-serif font-semibold text-xl text-zinc-200 mt-2">
+              <a href="${pub.link}" ${pub.link === '#' ? '' : 'target="_blank"'} class="hover:text-sky-400 transition-colors">${pub.title}</a>
+            </h3>
+            <p class="text-sm text-zinc-400 mt-2">${pub.authors}</p>
+          `;
+          publicationsContainer.appendChild(pubElement);
+        });
+
+        pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+        prevPageBtn.disabled = currentPage === 1;
+        nextPageBtn.disabled = currentPage === totalPages;
+      };
+
+      prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderPublications();
+        }
+      });
+
+      nextPageBtn.addEventListener('click', () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderPublications();
+        }
+      });
+
+      renderPublications(); // Initial render
+    });
+  </script>
+</body>
+</html>
+
+
+
+
