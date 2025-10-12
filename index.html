@@ -12,10 +12,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   
   <style>
-    /* --- GLOBAL FIX --- */
-    * {
-        box-sizing: border-box;
-    }
     /* --- SCIENTIFIC DARK THEME --- */
     :root {
       --bg-dark: #0A0A0A;
@@ -50,9 +46,7 @@
     }
 
     .card {
-      background-color: rgba(17, 17, 17, 0.55);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background-color: var(--card-bg);
       border: 1px solid var(--card-border);
       box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05), inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
     }
@@ -182,10 +176,10 @@
     </div>
   </div>
 
-  <div class="content-wrapper max-w-4xl mx-auto px-6 py-12 md:py-20">
+  <div class="content-wrapper px-6 md:px-12 lg:px-24 py-12 md:py-20">
 
     <!-- Header Section -->
-    <header class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-16 md:mb-24">
+    <header class="flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-8 mb-16 md:mb-24">
       <div>
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight font-serif gradient-text">Ali Heidari Shirazi</h1>
         <p class="text-lg text-zinc-400 mt-2">Ph.D. in Mechanical Engineering</p>
@@ -204,7 +198,7 @@
       </div>
       <div class="flex-shrink-0">
         <img 
-          src="https://placehold.co/160x160/111111/38bdf8?text=AHS" 
+          src="https://i.postimg.cc/T3N32wzV/profile.jpg" 
           alt="Ali Heidari Shirazi" 
           class="rounded-full w-32 h-32 md:w-40 md:h-40 border-2 border-zinc-800 shadow-lg"
         >
@@ -217,11 +211,11 @@
         <h2 class="text-3xl font-bold font-serif text-zinc-200 mb-8">Research Focus</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <!-- Research Card 1 -->
-          <div class="research-card group cursor-pointer" data-title="Disordered Metamaterials" data-description="Investigating the effects of positional, material, and geometrical disorder on Bragg-scattering and locally resonant metamaterials to understand and predict their complex wave propagation behavior." data-status="Published" data-img-src="https://placehold.co/400x520/0f172a/38bdf8?text=Disorder+Effects">
+          <div class="research-card group cursor-pointer" data-title="Disordered Metamaterials" data-description="Investigating the effects of positional, material, and geometrical disorder on Bragg-scattering and locally resonant metamaterials to understand and predict their complex wave propagation behavior." data-status="Published" data-img-src="https://i.postimg.cc/k47jVvH3/research1.jpg">
             <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
               <div>
                 <div class="overflow-hidden rounded-lg mb-4">
-                  <img src="https://placehold.co/400x520/0f172a/38bdf8?text=Disorder+Effects" alt="Abstract representation of disordered metamaterials" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                  <img src="https://i.postimg.cc/k47jVvH3/research1.jpg" alt="Abstract representation of disordered metamaterials" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
                 </div>
                 <h3 class="font-semibold text-zinc-200">Disordered Metamaterials</h3>
               </div>
@@ -229,11 +223,11 @@
             </div>
           </div>
           <!-- Research Card 2 -->
-          <div class="research-card group cursor-pointer" data-title="Nonlinear Dynamics" data-description="Analyzing the influence of chaos, bifurcation, and dead-zone nonlinearities on the bandgaps of mechanical systems through advanced time-domain simulations and analytical models." data-status="Published" data-img-src="https://placehold.co/400x520/064e3b/34d399?text=Nonlinearity">
+          <div class="research-card group cursor-pointer" data-title="Nonlinear Dynamics" data-description="Analyzing the influence of chaos, bifurcation, and dead-zone nonlinearities on the bandgaps of mechanical systems through advanced time-domain simulations and analytical models." data-status="Published" data-img-src="https://i.postimg.cc/yN0mYc7Q/research4.jpg">
             <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
               <div>
                 <div class="overflow-hidden rounded-lg mb-4">
-                  <img src="https://placehold.co/400x520/064e3b/34d399?text=Nonlinearity" alt="Abstract representation of nonlinear dynamics" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                  <img src="https://i.postimg.cc/yN0mYc7Q/research4.jpg" alt="Abstract representation of nonlinear dynamics" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
                 </div>
                 <h3 class="font-semibold text-zinc-200">Nonlinear Dynamics</h3>
               </div>
@@ -241,11 +235,11 @@
             </div>
           </div>
           <!-- Research Card 3 -->
-          <div class="research-card group cursor-pointer" data-title="Wave Propagation" data-description="Analyzing diffraction mechanisms and higher order mode generation in layered media, and designing multi-beam structures that enable advanced dynamic modes and broadened attenuation ranges." data-status="Ongoing" data-img-src="https://placehold.co/400x520/78350f/f59e0b?text=Wave+Physics">
+          <div class="research-card group cursor-pointer" data-title="Wave Propagation" data-description="Analyzing diffraction mechanisms and higher order mode generation in layered media, and designing multi-beam structures that enable advanced dynamic modes and broadened attenuation ranges." data-status="Ongoing" data-img-src="https://i.postimg.cc/Qd2gYy0B/research3.jpg">
             <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
               <div>
                 <div class="overflow-hidden rounded-lg mb-4">
-                  <img src="https://placehold.co/400x520/78350f/f59e0b?text=Wave+Physics" alt="Abstract representation of wave propagation" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                  <img src="https://i.postimg.cc/Qd2gYy0B/research3.jpg" alt="Abstract representation of wave propagation" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
                 </div>
                 <h3 class="font-semibold text-zinc-200">Wave Propagation</h3>
               </div>
@@ -253,11 +247,11 @@
             </div>
           </div>
           <!-- Research Card 4 -->
-          <div class="research-card group cursor-pointer" data-title="Computational Methods" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials." data-status="Ongoing" data-img-src="https://placehold.co/400x520/5b21b6/a78bfa?text=Computation">
+          <div class="research-card group cursor-pointer" data-title="Computational Methods" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials." data-status="Ongoing" data-img-src="https://i.postimg.cc/L5YwN0s1/research2.jpg">
             <div class="bento-item card rounded-xl p-4 h-full flex flex-col justify-between">
               <div>
                 <div class="overflow-hidden rounded-lg mb-4">
-                  <img src="https://placehold.co/400x520/5b21b6/a78bfa?text=Computation" alt="Abstract representation of computational methods" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
+                  <img src="https://i.postimg.cc/L5YwN0s1/research2.jpg" alt="Abstract representation of computational methods" class="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105">
                 </div>
                 <h3 class="font-semibold text-zinc-200">Computational Methods</h3>
               </div>
@@ -393,7 +387,7 @@
     uniform float u_zoom;
     uniform vec2 u_rot;
 
-    #define MAX_STEPS 20
+    #define MAX_STEPS 18
     #define MAX_DIST 35.0
     #define SURF_DIST 0.001
 
@@ -414,7 +408,7 @@
         float r = 0.0;
         iter = 0.0;
         float power = 6.0 + 4.0 * cos(u_time * 0.2 + 3.14159) * (1.0 + 0.12 * u_zoom);
-        for (int i = 0; i < 5; i++) { 
+        for (int i = 0; i < 4; i++) { // Reduced iterations for performance
             r = length(z);
             if (r > 2.2) break;
             iter += 1.0;
@@ -446,7 +440,7 @@
       vec3 a = vec3(0.5, 0.5, 0.5);
       vec3 b = vec3(0.5, 0.5, 0.5);
       vec3 c = vec3(1.0, 1.0, 1.0);
-      vec3 d = vec3(0.10, 0.20, 0.30);
+      vec3 d = vec3(0.10, 0.20, 0.30); // Tweaked for a cyan/blue/violet look
       return a + b*cos( 6.28318*(c*t+d) );
     }
 
@@ -460,7 +454,6 @@
 
         float iter;
         float d = 0.0;
-        // Raymarch loop
         for(int i=0; i < MAX_STEPS; i++) {
             vec3 p = ro + rd * d;
             float ds = mandelbulbDE(p, iter);
@@ -517,7 +510,7 @@
 
       // --- WebGL Fractal Background ---
       const canvas = document.getElementById('glCanvas');
-      const gl = canvas.getContext('webgl', { antialias: true, alpha: false, powerPreference: 'high-performance' });
+      const gl = canvas.getContext('webgl', { antialias: true, alpha: false, powerPreference: 'low-power' });
 
       if (!gl) {
         console.error("WebGL is not supported by your browser.");
@@ -800,7 +793,4 @@
   </script>
 </body>
 </html>
-
-
-
 
