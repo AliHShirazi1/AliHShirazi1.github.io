@@ -197,7 +197,7 @@
                   <h3 class="font-semibold text-dark">Wave Propagation</h3>
                 </div>
             </div>
-            <div class="research-card group cursor-pointer" data-title="Computational Methods" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials. (Published study)" data-link="https://doi.org/10.1016/j.ijsolstr.2025.113339" data-link-text="(Published study)" data-img-src="research2.png">
+            <div class="research-card group cursor-pointer" data-title="Dynamic Characterization" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials. (Published study)" data-link="https://doi.org/10.1016/j.ijsolstr.2025.113339" data-link-text="(Published study)" data-img-src="research2.png">
                 <div class="card rounded-xl p-4 h-full">
                   <div class="overflow-hidden rounded-lg mb-4 aspect-card-image">
                     <img src="research2.png" alt="Abstract representation of computational methods" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
@@ -708,7 +708,17 @@
 
       const openModal = (card) => {
         modalTitle.textContent = card.dataset.title;
-        modalDescription.textContent = card.dataset.description;
+        let description = card.dataset.description;
+        const link = card.dataset.link;
+        const linkText = card.dataset.linkText;
+
+        // This is the part that creates the link
+        if (link && linkText && description.includes(linkText)) {
+            const linkHtml = `<a href="${link}" target="_blank" class="text-accent-primary font-semibold hover:underline">${linkText}</a>`;
+            description = description.replace(linkText, linkHtml);
+        }
+        
+        modalDescription.innerHTML = description; // Use .innerHTML to render the link
         modalImg.src = card.dataset.imgSrc;
         document.body.style.overflow = 'hidden';
         modal.classList.remove('opacity-0', 'pointer-events-none');
