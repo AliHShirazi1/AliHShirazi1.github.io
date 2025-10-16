@@ -10,8 +10,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Serif+Pro:wght@600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- THREE.js and TWEEN.js for the lattice animation -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <!-- MathJax for LaTeX rendering --><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/21.0.0/tween.umd.js"></script>
+  <!-- MathJax for LaTeX rendering -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script>
     window.MathJax = {
       tex: {
@@ -100,7 +103,6 @@
       transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
     }
 
-    /* Style for scrolled navbar */
     .nav-scrolled {
       background-color: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(8px);
@@ -108,7 +110,6 @@
       border-bottom: 1px solid var(--card-border);
     }
     
-    /* Custom aspect ratio for research card images */
     .aspect-card-image {
         aspect-ratio: 1 / 1.3;
     }
@@ -116,11 +117,37 @@
       list-style-type: disc;
       padding-left: 1.5rem;
     }
+
+    /* --- Styles for Lattice Animation --- */
+    .speech-bubble {
+        position: absolute;
+        background-color: rgba(240, 240, 240, 0.8);
+        color: #333;
+        padding: 8px 12px;
+        border-radius: 15px;
+        font-size: 14px;
+        white-space: nowrap;
+        display: none; 
+        transform: translate(-50%, -130%); 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        backdrop-filter: blur(2px);
+    }
+    .speech-bubble::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-width: 8px 8px 0;
+        border-style: solid;
+        border-color: rgba(240, 240, 240, 0.8) transparent transparent transparent;
+    }
   </style>
 </head>
 <body class="overflow-x-hidden">
   
-  <!-- Navigation Bar --><nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
+  <!-- Navigation Bar -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
     <div class="max-w-5xl mx-auto px-4 sm:px-8">
       <div class="flex justify-between items-center h-16">
         <a href="#home" class="font-serif font-bold text-lg text-dark">A. H. Shirazi</a>
@@ -137,11 +164,13 @@
   </nav>
 
   <div class="max-w-5xl mx-auto px-4 sm:px-8">
-    <!-- Header Section --><header id="home" class="grid grid-cols-1 md:grid-cols-2 gap-16 min-h-screen items-center pt-24 md:pt-0">
-      <!-- Left Intro Content --><div>
-        <img 
-          src="profile.png" 
-          alt="Profile picture of Ali Heidari Shirazi" 
+    <!-- Header Section -->
+    <header id="home" class="grid grid-cols-1 md:grid-cols-2 gap-16 min-h-screen items-center pt-24 md:pt-0">
+      <!-- Left Intro Content -->
+      <div>
+        <img  
+          src="profile.png"  
+          alt="Profile picture of Ali Heidari Shirazi"  
           class="rounded-full w-48 h-48 border-4 border-white shadow-lg mb-8 object-cover"
         >
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight font-serif text-dark">Ali Heidari Shirazi</h1>
@@ -157,20 +186,25 @@
           <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link">Google Scholar</a>
         </div>
       </div>
-      <!-- Right Fractal Content --><div class="hidden md:flex flex-col items-center justify-center">
-        <div class="h-[60vh] w-full">
-            <canvas id="mandelbulb-canvas" class="w-full h-full cursor-grab active:cursor-grabbing rounded-lg"></canvas>
+
+      <!-- Right Lattice Animation -->
+      <div class="hidden md:flex flex-col items-center justify-center relative">
+        <div class="h-[60vh] w-full relative">
+            <canvas id="lattice-canvas" class="w-full h-full rounded-lg"></canvas>
+            <div id="speech-bubble-container" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
+            <button id="morph-button" class="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-base font-medium rounded-full shadow-lg bg-white/70 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">Excite!</button>
         </div>
         <div class="w-full text-center mt-4 px-4">
-            <p class="text-xs text-subtle italic">A biological cell? An alien artifact? The blueprint for an acoustic resonator? The Mandelbulb is a gateway to infinite complexity. Where could your scientific curiosity lead? Let's collaborate and discover what's next.</p>
-            <p class="text-xs text-subtle mt-2">The core transformation $v \mapsto v^n + c$ is defined in spherical coordinates $(r, \phi, \theta)$ as: $$ (r, \phi, \theta) \mapsto (r^n, n\phi, n\theta) $$</p>
+            <p class="text-xs text-subtle italic">This interactive animation showcases a shape-morphing mechanical metamaterial. Click 'Excite!' to induce a parabolic deformation, demonstrating how these smart structures can change their physical properties on command.</p>
         </div>
       </div>
     </header>
     
-    <!-- Scrolling Full-Width Cards --><main class="space-y-20 sm:space-y-28 py-16">
+    <!-- Scrolling Full-Width Cards -->
+    <main class="space-y-20 sm:space-y-28 py-16">
       
-      <!-- Research Focus Section --><section id="research" class="scroll-card scroll-mt-24">
+      <!-- Research Focus Section -->
+      <section id="research" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Research Focus</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="research-card group cursor-pointer" data-title="Disordered Metamaterials" data-description="Investigating the effects of positional, material, and geometrical disorder on Bragg-scattering and locally resonant metamaterials to understand and predict their complex wave propagation behavior. (Ongoing study)" data-img-src="research1.png">
@@ -208,7 +242,8 @@
         </div>
       </section>
 
-      <!-- Education Section --><section id="education" class="scroll-card scroll-mt-24">
+      <!-- Education Section -->
+      <section id="education" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Education</h2>
         <div class="space-y-8">
           <div class="card rounded-xl p-6">
@@ -240,7 +275,8 @@
         </div>
       </section>
 
-      <!-- Research Experience Section --><section id="experience" class="scroll-card scroll-mt-24">
+      <!-- Research Experience Section -->
+      <section id="experience" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Research Experience</h2>
         <div class="space-y-8">
           <div class="card rounded-xl p-6 resume-item">
@@ -272,11 +308,13 @@
         </div>
       </section>
 
-      <!-- Publications Section --><section id="publications" class="scroll-card scroll-mt-24">
+      <!-- Publications Section -->
+      <section id="publications" class="scroll-card scroll-mt-24">
           <h2 class="text-3xl font-bold font-serif text-dark mb-2">Journal Publications</h2>
           <p class="text-sm text-subtle mb-8">Total Citations: 465  &bull; h-index: 7 &bull; i10-index: 6</p>
           <div id="publications-container" class="space-y-4">
-            <!-- Publications will be injected here --></div>
+            <!-- Publications will be injected here -->
+          </div>
           <div class="mt-8 flex justify-between items-center">
             <button id="prevPageBtn" class="bg-white border border-gray-200 rounded-lg px-5 py-2.5 text-sm font-medium text-main hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">Previous</button>
             <span id="pageIndicator" class="text-sm text-subtle"></span>
@@ -284,7 +322,8 @@
           </div>
       </section>
 
-      <!-- Skills Section --><section id="skills" class="scroll-card scroll-mt-24">
+      <!-- Skills Section -->
+      <section id="skills" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Skills</h2>
         <div class="grid md:grid-cols-2 gap-4">
             <div class="card rounded-xl p-6">
@@ -314,7 +353,8 @@
         </div>
       </section>
 
-       <!-- Honors and Awards Section --><section id="awards" class="scroll-card scroll-mt-24">
+        <!-- Honors and Awards Section -->
+      <section id="awards" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Honors and Awards</h2>
         <div class="space-y-4">
             <div class="card rounded-xl p-6 flex justify-between items-center">
@@ -336,7 +376,8 @@
         </div>
       </section>
 
-      <!-- Projects Section --><section id="projects" class="scroll-card scroll-mt-24">
+      <!-- Projects Section -->
+      <section id="projects" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Projects</h2>
         <div class="space-y-8">
             <div class="card rounded-xl p-6 resume-item">
@@ -367,9 +408,10 @@
                 </ul>
             </div>
         </div>
-    </section>
+      </section>
 
-    <!-- Professional Service Section --><section id="service" class="scroll-card scroll-mt-24">
+      <!-- Professional Service Section -->
+      <section id="service" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Professional Service</h2>
         <div class="grid md:grid-cols-2 gap-8">
             <div class="card rounded-xl p-6 resume-item">
@@ -390,24 +432,26 @@
                 </ul>
             </div>
         </div>
-    </section>
+      </section>
 
     </main>
   </div>
 
-  <!-- Footer --><footer class="border-t border-gray-200">
+  <!-- Footer -->
+  <footer class="border-t border-gray-200">
     <div class="max-w-5xl mx-auto px-4 sm:px-8 py-12 text-center text-subtle">
       <div class="flex justify-center items-center gap-8 mb-6">
-          <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link text-sm">Email</a>
-          <a href="https://www.linkedin.com/in/alihshirazi/" target="_blank" class="highlight-link text-sm">LinkedIn</a>
-          <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link text-sm">Google Scholar</a>
+        <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link text-sm">Email</a>
+        <a href="https://www.linkedin.com/in/alihshirazi/" target="_blank" class="highlight-link text-sm">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link text-sm">Google Scholar</a>
       </div>
       <p class="text-sm">&copy; 2025 Ali Heidari Shirazi. All rights reserved.</p>
     </div>
   </footer>
 
 
-  <!-- Research Card Modal --><div id="research-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
+  <!-- Research Card Modal -->
+  <div id="research-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none">
     <div id="modal-content" class="modal-content bg-white rounded-xl w-full max-w-lg p-6 relative transform scale-95 opacity-0">
       <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 transition-colors z-10 text-4xl leading-none">&times;</button>
         <div>
@@ -417,144 +461,6 @@
         </div>
     </div>
   </div>
-
-  <!-- GLSL SHADER CODE --><script id="vertexShader" type="x-shader/x-vertex">
-    void main() {
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-    }
-  </script>
-
-  <script id="fragmentShader" type="x-shader/x-fragment">
-    // --- Uniforms passed from JavaScript ---
-    uniform vec2 u_resolution;
-    uniform float u_time;
-    uniform vec2 u_mouse;
-    uniform float u_power;
-
-    // --- Raymarching constants ---
-    const int MAX_STEPS = 100;
-    const float MAX_DIST = 100.0;
-    const float SURF_DIST = 0.001;
-
-    // --- Mandelbulb Signed Distance Estimator (SDE) ---
-    float mandelbulbSDE(vec3 pos) {
-        vec3 z = pos;
-        float dr = 1.0;
-        float r = 0.0;
-        for (int i = 0; i < 8; i++) {
-            r = length(z);
-            if (r > 2.0) break;
-            
-            float theta = acos(z.z / r);
-            float phi = atan(z.y, z.x);
-            dr = pow(r, u_power - 1.0) * u_power * dr + 1.0;
-            
-            float zr = pow(r, u_power);
-            theta = theta * u_power;
-            phi = phi * u_power;
-            
-            z = zr * vec3(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta));
-            z += pos;
-        }
-        return 0.5 * log(r) * r / dr;
-    }
-
-    float getDist(vec3 p) {
-        return mandelbulbSDE(p);
-    }
-
-    float rayMarch(vec3 ro, vec3 rd) {
-        float dO = 0.0;
-        for (int i = 0; i < MAX_STEPS; i++) {
-            vec3 p = ro + rd * dO;
-            float dS = getDist(p);
-            dO += dS;
-            if (dO > MAX_DIST || dS < SURF_DIST) break;
-        }
-        return dO;
-    }
-
-    vec3 getNormal(vec3 p) {
-        float d = getDist(p);
-        vec2 e = vec2(0.001, 0);
-        vec3 n = d - vec3(
-            getDist(p - e.xyy),
-            getDist(p - e.yxy),
-            getDist(p - e.yyx)
-        );
-        return normalize(n);
-    }
-    
-    mat3 rotateY(float angle) {
-        float s = sin(angle);
-        float c = cos(angle);
-        return mat3(c, 0.0, -s, 0.0, 1.0, 0.0, s, 0.0, c);
-    }
-    mat3 rotateX(float angle) {
-        float s = sin(angle);
-        float c = cos(angle);
-        return mat3(1.0, 0.0, 0.0, 0.0, c, s, 0.0, -s, c);
-    }
-
-    void main() {
-        // --- Responsive UV calculation to prevent cropping ---
-        vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
-
-        vec3 ro = vec3(0, 0, 2.5);
-        vec3 rd = normalize(vec3(uv, -1.0));
-
-        mat3 rot = rotateY(u_mouse.x) * rotateX(u_mouse.y);
-        ro = rot * ro;
-        rd = rot * rd;
-        
-        float d = rayMarch(ro, rd);
-
-        // --- BACKGROUND COLOR to match website ---
-        vec3 col = vec3(0.976, 0.98, 0.984); 
-
-        if (d < MAX_DIST) {
-            vec3 p = ro + rd * d;
-            vec3 normal = getNormal(p);
-
-            // --- Light 1 (Key Light) - Slightly warm, primary light ---
-            vec3 lightPos1 = vec3(2.0, 2.0, 3.0);
-            lightPos1 = rot * lightPos1;
-            vec3 lightDir1 = normalize(lightPos1 - p);
-            float diffuse1 = max(0.0, dot(normal, lightDir1));
-            
-            // --- Light 2 (Fill Light) - Cool blue ---
-            vec3 lightPos2 = vec3(-3.0, -1.0, 2.0);
-            lightPos2 = rot * lightPos2;
-            vec3 lightDir2 = normalize(lightPos2 - p);
-            float diffuse2 = max(0.0, dot(normal, lightDir2));
-
-            // --- Light 3 (Accent Light) - Warm orange ---
-            vec3 lightPos3 = vec3(0.0, -3.0, -2.0); // Positioned to hit from below/behind
-            lightPos3 = rot * lightPos3;
-            vec3 lightDir3 = normalize(lightPos3 - p);
-            float diffuse3 = max(0.0, dot(normal, lightDir3));
-
-
-            float ambient = 0.5 + 0.5 * dot(normal, vec3(0.0, 1.0, 0.0));
-            
-            // --- Material Color ---
-            vec3 accentPrimaryBlue = vec3(0.145, 0.388, 0.922); 
-            vec3 deepBlue = vec3(0.05, 0.15, 0.4); 
-            vec3 materialColor = mix(deepBlue, accentPrimaryBlue, 0.5 + 0.5 * normal.y);
-            materialColor = mix(materialColor, deepBlue, 0.5 + 0.5 * sin(p.z * 5.0));
-
-            // --- Combine Lights ---
-            vec3 light1Color = vec3(1.0, 0.9, 0.8) * 0.7; // Warm key light (slightly desaturated)
-            vec3 light2Color = vec3(0.7, 0.8, 1.0) * 0.5; // Cool blue fill light
-            vec3 light3Color = vec3(1.0, 0.5, 0.1) * 0.4; // Vibrant orange accent light (reduced intensity)
-
-
-            col = materialColor * (diffuse1 * light1Color + diffuse2 * light2Color + diffuse3 * light3Color + ambient * 0.5);
-        }
-        
-        gl_FragColor = vec4(col, 1.0);
-    }
-  </script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -568,6 +474,7 @@
             }
         });
 
+        // --- Animate Cards on Scroll ---
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -580,207 +487,317 @@
             scrollObserver.observe(card);
         });
 
-      // --- Three.js Mandelbulb Raymarcher ---
-      const canvas = document.getElementById('mandelbulb-canvas');
-      if (canvas) { // Always try to init, but shader will handle visibility
-          let scene, camera, renderer, material, plane;
-          const clock = new THREE.Clock();
+        // --- NEW: Interactive Lattice Animation ---
+        const latticeCanvas = document.getElementById('lattice-canvas');
+        if(latticeCanvas) {
+            const scene = new THREE.Scene();
+            const aspect = latticeCanvas.clientWidth / latticeCanvas.clientHeight;
+            const frustumSize = 38;
+            const camera = new THREE.OrthographicCamera(
+                frustumSize * aspect / -2, frustumSize * aspect / 2,
+                frustumSize / 2, frustumSize / -2,
+                1, 1000
+            );
+            camera.position.set(25, 25, 25);
+            camera.lookAt(scene.position);
+            scene.add(camera);
 
-          const uniforms = {
-              u_time: { value: 0.0 },
-              u_resolution: { value: new THREE.Vector2() },
-              u_mouse: { value: new THREE.Vector2() },
-              u_power: { value: 8.0 }
-          };
-          
-          let isDragging = false;
-          let hasDragged = false;
-          let previousMousePosition = { x: 0, y: 0 };
-          let targetRotation = { x: -0.5, y: 0.5 }; // Start with a slight angle
-          let actualRotation = { x: -0.5, y: 0.5 };
+            const renderer = new THREE.WebGLRenderer({ canvas: latticeCanvas, antialias: true, alpha: true });
+            renderer.setClearColor(0x000000, 0);
+            renderer.setSize(latticeCanvas.clientWidth, latticeCanvas.clientHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambientLight);
+            const pointLight1 = new THREE.PointLight(0xffffff, 2);
+            pointLight1.position.set(20, 25, 20);
+            scene.add(pointLight1);
 
-          function init() {
-              const container = canvas.parentElement;
-              scene = new THREE.Scene();
-              camera = new THREE.Camera();
+            const speechBubbleContainer = document.getElementById('speech-bubble-container');
+            const phrases = [
+                "Happy metamaterial!", "Yayyyy!", "Whee!", "Boing!",
+                "I'm morphing!", "So round!", "Look, a sphere!", "We have potential!",
+                "Shape shifter!", "This is fun!", "Hello world!"
+            ];
 
-              renderer = new THREE.WebGLRenderer({ 
-                  canvas: canvas, 
-                  antialias: true,
-                  alpha: true // Set canvas to be transparent
-              });
-              renderer.setClearColor(0x000000, 0); // Transparent clear color
-              renderer.setSize(container.clientWidth, container.clientHeight);
-              renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-              
-              uniforms.u_resolution.value.x = renderer.domElement.width;
-              uniforms.u_resolution.value.y = renderer.domElement.height;
+            const spheres = [];
+            const lines = [];
+            const gridSize = 5;
+            const spacing = 4.0;
+            const sphereRadius = 0.8;
+            const sphereGeometry = new THREE.SphereGeometry(sphereRadius, 32, 32);
+            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x555555, opacity: 0.6, transparent: true });
+            const eyeGeometry = new THREE.CircleGeometry(0.2, 32);
+            const pupilGeometry = new THREE.CircleGeometry(0.1, 32);
+            const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            const pupilMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
-              const geometry = new THREE.PlaneBufferGeometry(2, 2);
-              material = new THREE.ShaderMaterial({
-                  uniforms: uniforms,
-                  vertexShader: document.getElementById('vertexShader').textContent,
-                  fragmentShader: document.getElementById('fragmentShader').textContent,
-                  transparent: true // Shader material is transparent
-              });
+            const sphereGrid = [];
+            for (let i = 0; i < gridSize; i++) {
+                const row = [];
+                for (let j = 0; j < gridSize; j++) {
+                    const material = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 0.0, roughness: 1.0 });
+                    const sphere = new THREE.Mesh(sphereGeometry, material);
 
-              plane = new THREE.Mesh(geometry, material);
-              scene.add(plane);
+                    const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+                    leftEye.position.set(-0.3, 0.25, sphereRadius * 0.9);
+                    const rightEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
+                    rightEye.position.set(0.3, 0.25, sphereRadius * 0.9);
+                    const leftPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+                    leftPupil.position.z = 0.01;
+                    const rightPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
+                    rightPupil.position.z = 0.01;
+                    leftEye.add(leftPupil);
+                    rightEye.add(rightPupil);
+                    sphere.add(leftEye, rightEye);
 
-              animate();
-              
-              canvas.addEventListener('mousedown', onMouseDown);
-              canvas.addEventListener('mousemove', onMouseMove);
-              canvas.addEventListener('mouseup', onMouseUp);
-              canvas.addEventListener('mouseleave', onMouseUp);
-              window.addEventListener('resize', onWindowResize);
-          }
+                    const speechBubbleDiv = document.createElement('div');
+                    speechBubbleDiv.className = 'speech-bubble';
+                    speechBubbleContainer.appendChild(speechBubbleDiv);
+                    
+                    sphere.userData = {
+                        isBlinking: false, blinkStartTime: 0, nextBlinkTime: 2 + Math.random() * 6,
+                        offset: Math.random() * Math.PI * 2,
+                        isTalking: false, talkStartTime: 0, 
+                        // MODIFIED: Stagger initial talks and make them rarer
+                        nextTalkTime: 5 + Math.random() * 15, 
+                        talkDuration: 3,
+                        speechBubble: speechBubbleDiv
+                    };
+                    
+                    // MODIFIED: Start at center and animate out
+                    const targetX = (j - (gridSize - 1) / 2) * spacing;
+                    const targetZ = (i - (gridSize - 1) / 2) * spacing;
+                    sphere.position.set(0, 0, 0);
 
-          function onMouseDown(e) {
-              isDragging = true;
-              hasDragged = false;
-              previousMousePosition.x = e.clientX;
-              previousMousePosition.y = e.clientY;
-          }
+                    new TWEEN.Tween(sphere.position)
+                        .to({ x: targetX, y: 0, z: targetZ }, 1500)
+                        .easing(TWEEN.Easing.Exponential.Out)
+                        .delay(i * 50 + j * 50)
+                        .start();
 
-          function onMouseMove(e) {
-              if (isDragging) {
-                  hasDragged = true;
-                  const deltaX = e.clientX - previousMousePosition.x;
-                  const deltaY = e.clientY - previousMousePosition.y;
-                  
-                  targetRotation.y += deltaX * 0.01;
-                  targetRotation.x += deltaY * 0.01;
+                    scene.add(sphere);
+                    spheres.push(sphere);
+                    row.push(sphere);
+                }
+                sphereGrid.push(row);
+            }
 
-                  previousMousePosition.x = e.clientX;
-                  previousMousePosition.y = e.clientY;
-              }
-          }
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const sphere1 = sphereGrid[i][j];
+                    if (j + 1 < gridSize) {
+                        const sphere2 = sphereGrid[i][j+1];
+                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]);
+                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        scene.add(line);
+                        lines.push({ line: line, sphere1: sphere1, sphere2: sphere2 });
+                    }
+                    if (i + 1 < gridSize) {
+                        const sphere2 = sphereGrid[i+1][j];
+                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]);
+                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        scene.add(line);
+                        lines.push({ line: line, sphere1: sphere1, sphere2: sphere2 });
+                    }
+                }
+            }
+            
+            let isMorphed = false;
+            const morphButton = document.getElementById('morph-button');
+            
+            function triggerMorph() {
+                const targetShape = isMorphed ? 'parabola' : 'grid';
 
-          function onMouseUp() {
-              isDragging = false;
-          }
+                spheres.forEach((sphere) => {
+                    const x = sphere.position.x;
+                    const z = sphere.position.z;
+                    let targetY = 0;
+                    if (targetShape === 'parabola') {
+                        targetY = -0.15 * (x*x + z*z) + 8; 
+                    }
+                    new TWEEN.Tween(sphere.position)
+                        .to({ y: targetY }, 2000)
+                        .easing(TWEEN.Easing.Quadratic.InOut)
+                        .start();
+                });
+            }
 
-          function animate() {
-              requestAnimationFrame(animate);
-              
-              // Smoothly interpolate the actual rotation towards the target rotation (lerp)
-              actualRotation.x += (targetRotation.x - actualRotation.x) * 0.05;
-              actualRotation.y += (targetRotation.y - actualRotation.y) * 0.05;
+            morphButton.addEventListener('click', () => {
+                isMorphed = !isMorphed;
+                morphButton.textContent = isMorphed ? 'Turn off!' : 'Excite!';
+                triggerMorph();
+            });
 
-              // Auto-rotate if not dragging
-              if (!isDragging) {
-                  targetRotation.y += 0.001;
-              }
+            const clock = new THREE.Clock();
+            const blinkDuration = 0.15;
+            const positionVector = new THREE.Vector3();
 
-              // --- FRACTAL POWER ANIMATION ---
-              const basePower = 7.0;
-              const powerAmplitude = 5.0; // The range of animation (7.0 to 12.0)
-              const animationSpeed = 0.15; 
-              // Use a sine wave to create a smooth loop
-              const powerOffset = powerAmplitude * (0.5 * (1.0 + Math.sin(clock.getElapsedTime() * animationSpeed)));
-              uniforms.u_power.value = basePower + powerOffset;
-              
-              uniforms.u_mouse.value.x = actualRotation.y;
-              uniforms.u_mouse.value.y = actualRotation.x;
-              uniforms.u_time.value = clock.getElapsedTime();
-              
-              renderer.render(scene, camera);
-          }
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+                TWEEN.update();
 
-          function onWindowResize() {
-              const container = canvas.parentElement;
-              renderer.setSize(container.clientWidth, container.clientHeight);
-              uniforms.u_resolution.value.x = renderer.domElement.width;
-              uniforms.u_resolution.value.y = renderer.domElement.height;
-          }
+                spheres.forEach((sphere) => {
+                    const yOffset = Math.sin(elapsedTime * 15 + sphere.userData.offset) * 0.1;
+                    sphere.position.y += yOffset;
+                    sphere.lookAt(camera.position);
 
-          init();
-      }
+                    const leftEye = sphere.children[0];
+                    const rightEye = sphere.children[1];
+                    if (sphere.userData.isBlinking) {
+                        if (elapsedTime - sphere.userData.blinkStartTime > blinkDuration) {
+                            leftEye.scale.y = 1; rightEye.scale.y = 1;
+                            sphere.userData.isBlinking = false;
+                            sphere.userData.nextBlinkTime = elapsedTime + 2 + Math.random() * 6;
+                        }
+                    } else if (elapsedTime > sphere.userData.nextBlinkTime) {
+                        sphere.userData.isBlinking = true;
+                        sphere.userData.blinkStartTime = elapsedTime;
+                        leftEye.scale.y = 0.1; rightEye.scale.y = 0.1;
+                    }
+                    
+                    if (sphere.userData.isTalking) {
+                        if (elapsedTime - sphere.userData.talkStartTime > sphere.userData.talkDuration) {
+                            sphere.userData.speechBubble.style.display = 'none';
+                            sphere.userData.isTalking = false;
+                            // MODIFIED: Make subsequent talks rarer
+                            sphere.userData.nextTalkTime = elapsedTime + 30 + Math.random() * 30;
+                        }
+                    } else if (elapsedTime > sphere.userData.nextTalkTime) {
+                        sphere.userData.isTalking = true;
+                        sphere.userData.talkStartTime = elapsedTime;
+                        sphere.userData.speechBubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
+                        sphere.userData.speechBubble.style.display = 'block';
+                    }
 
-      const researchCards = document.querySelectorAll('.research-card');
-      const modal = document.getElementById('research-modal');
-      const modalContent = document.getElementById('modal-content');
-      const modalTitle = document.getElementById('modal-title');
-      const modalDescription = document.getElementById('modal-description');
-      const modalImg = document.getElementById('modal-img');
-      const closeModalBtn = document.getElementById('close-modal-btn');
+                    positionVector.copy(sphere.position);
+                    positionVector.project(camera);
+                    const screenX = (positionVector.x + 1) * latticeCanvas.clientWidth / 2;
+                    const screenY = (-positionVector.y + 1) * latticeCanvas.clientHeight / 2;
+                    sphere.userData.speechBubble.style.left = `${screenX}px`;
+                    sphere.userData.speechBubble.style.top = `${screenY}px`;
+                    
+                    sphere.position.y -= yOffset;
+                });
+                
+                lines.forEach(data => {
+                    const positions = data.line.geometry.attributes.position;
+                    positions.setXYZ(0, data.sphere1.position.x, data.sphere1.position.y, data.sphere1.position.z);
+                    positions.setXYZ(1, data.sphere2.position.x, data.sphere2.position.y, data.sphere2.position.z);
+                    positions.needsUpdate = true;
+                });
 
-      const openModal = (card) => {
-        modalTitle.textContent = card.dataset.title;
-        let description = card.dataset.description;
-        const link = card.dataset.link;
-        const linkText = card.dataset.linkText;
+                renderer.render(scene, camera);
+            }
 
-        // This is the part that creates the link
-        if (link && linkText && description.includes(linkText)) {
-            const linkHtml = `<a href="${link}" target="_blank" class="text-accent-primary font-semibold hover:underline">${linkText}</a>`;
-            description = description.replace(linkText, linkHtml);
+            function onWindowResize() {
+                const container = latticeCanvas.parentElement;
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            }
+
+            window.addEventListener('resize', onWindowResize);
+            animate();
         }
-        
-        modalDescription.innerHTML = description; // Use .innerHTML to render the link
-        modalImg.src = card.dataset.imgSrc;
-        document.body.style.overflow = 'hidden';
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        setTimeout(() => { modalContent.classList.remove('scale-95', 'opacity-0'); }, 10);
-      };
 
-      const closeModal = () => {
-        modalContent.classList.add('scale-95', 'opacity-0');
-        modal.classList.add('opacity-0');
-        setTimeout(() => {
-          modal.classList.add('pointer-events-none');
-          document.body.style.overflow = '';
-        }, 300);
-      };
+        // --- Research Modal Logic ---
+        const modal = document.getElementById('research-modal');
+        const modalContent = document.getElementById('modal-content');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const researchCards = document.querySelectorAll('.research-card');
 
-      researchCards.forEach(card => card.addEventListener('click', () => openModal(card)));
-      closeModalBtn.addEventListener('click', closeModal);
-      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+        researchCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // If there's an external link, go to it. Otherwise, open the modal.
+                const link = card.dataset.link;
+                if (link) {
+                    window.open(link, '_blank');
+                    return;
+                }
 
-      const publicationsData = [
-        { year: '2025', journal: 'International Journal of Solids and Structures', title: 'Dynamic homogenization of random elastodynamic metamaterials using space–time Fourier transform', authors: 'Shirazi, A. H., Abedi, R., & Pal, R. K.', link: 'https://doi.org/10.1016/j.ijsolstr.2025.113339'},
-        { year: '2020', journal: 'The European Physical Journal Plus', title: 'Physics of rack-and-pinion-inspired metamaterials with rotational resonators for broadband vibration suppression', authors: 'Shirazi, A. H., & Sedighi, H. M.', link: 'https://doi.org/10.1140/epjp/s13360-020-00286-y'},
-        { year: '2022', journal: 'Journal of Thermal Stresses', title: 'Thermoelastic behavior of an isotropic solid sphere under a non-uniform heat flow according to the MGT thermoelastic model', authors: 'Abouelregal, A. E., Saidi, A., Mohammad-Sedighi, H., Shirazi, A. H., & Sofiyev, A. H.', link: 'https://doi.org/10.1080/01495739.2021.2005497'},
-        { year: '2022', journal: 'Silicon', title: 'The effect of excess carrier on a semiconducting semi-infinite medium subject to a normal force by means of Green and Naghdi approach', authors: 'Abouelregal, A. E., Sedighi, H. M., & Shirazi, A. H.', link: 'https://doi.org/10.1007/s12633-021-01289-9'},
-        { year: '2022', journal: 'Continuum Mechanics and Thermodynamics', title: 'Computational analysis of an infinite magneto-thermoelastic solid...', authors: 'Abouelregal, A. E., Mohammad-Sedighi, H., Shirazi, A. H., Malikan, M., & Eremeyev, V. A.', link: 'https://doi.org/10.1007/s00161-021-00998-1'},
-        { year: '2021', journal: 'Facta Universitatis, Series: Mechanical Engineering', title: 'Passive atmospheric water harvesting utilizing an ancient Chinese ink slab', authors: 'He, C.-H., Liu, C., He, J.-H., Shirazi, A. H., & Mohammad-Sedighi, H.', link: 'https://doi.org/10.22190/fume201203001h'},
-        { year: '2021', journal: 'Facta Universitatis, Series: Mechanical Engineering', title: 'Temperature-dependent physical characteristics of the rotating nonlocal nanobeams...', authors: 'Abouelregal, A. E., Mohammad-Sedighi, H., Faghidian, S. A., & Shirazi, A. H.', link: 'https://doi.org/10.22190/fume201222024a'},
-        { year: '2021', journal: 'Facta Universitatis, Series: Mechanical Engineering', title: 'Hamiltonian-based frequency-amplitude formulation for nonlinear oscillators', authors: 'He, J.-H., Hou, W.-F., Qie, N., Gepreel, K. A., Shirazi, a. H., & Sedighi, H. M.', link: 'https://doi.org/10.22190/fume201205002h'},
-        { year: '2025', journal: 'Submitted to Nonlinear Dynamics', title: 'Performance Degradation in Locally Resonant Metamaterials Due to Dead-Zone Nonlinearity', authors: 'Shirazi, A. H., Abedi, R.', link: '#'}
-      ];
-
-      const publicationsContainer = document.getElementById('publications-container');
-      const prevPageBtn = document.getElementById('prevPageBtn');
-      const nextPageBtn = document.getElementById('nextPageBtn');
-      const pageIndicator = document.getElementById('pageIndicator');
-      let currentPage = 1;
-      const itemsPerPage = 4;
-      const totalPages = Math.ceil(publicationsData.length / itemsPerPage);
-
-      const renderPublications = () => {
-        publicationsContainer.innerHTML = '';
-        const pageItems = publicationsData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-        pageItems.forEach(pub => {
-          const pubElement = document.createElement('div');
-          pubElement.className = 'card rounded-xl p-4';
-          pubElement.innerHTML = `
-            <p class="text-sm text-subtle">${pub.year} &bull; ${pub.journal}</p>
-            <h3 class="font-semibold text-dark mt-1">
-              <a href="${pub.link}" ${pub.link === '#' ? 'class="cursor-default"' : 'target="_blank"'} class="hover:text-accent-primary transition-colors">${pub.title}</a>
-            </h3>
-            <p class="text-sm text-main mt-1">${pub.authors}</p>
-          `;
-          publicationsContainer.appendChild(pubElement);
+                document.getElementById('modal-title').textContent = card.dataset.title;
+                document.getElementById('modal-description').textContent = card.dataset.description;
+                document.getElementById('modal-img').src = card.dataset.imgSrc;
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
         });
-        pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
-        prevPageBtn.disabled = currentPage === 1;
-        nextPageBtn.disabled = currentPage === totalPages;
-      };
 
-      prevPageBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderPublications(); } });
-      nextPageBtn.addEventListener('click', () => { if (currentPage < totalPages) { currentPage++; renderPublications(); } });
-      renderPublications();
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            document.body.style.overflow = '';
+        }
+
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // --- Publications Pagination ---
+        const publications = [
+            { title: "On the coupled bandgaps in a new class of metamaterials made of parallel beams", authors: "A Heidari Shirazi, R Abedi", journal: "International Journal of Solids and Structures", year: 2025, doi: "10.1016/j.ijsolstr.2025.113339", link: "https://doi.org/10.1016/j.ijsolstr.2025.113339" },
+            { title: "Vibrational analysis of a metamaterial beam including a nonlinear local resonator based on the slider-crank mechanism concept", authors: "H M-Sedighi, A Heidari Shirazi", journal: "International Journal of Non-Linear Mechanics", year: 2020, doi: "10.1016/j.ijnonlinmec.2020.103445", link: "https://doi.org/10.1016/j.ijnonlinmec.2020.103445" },
+            { title: "Coupled Rotational–Translational Local Resonators for Broadband Vibration Suppression in Elastic Metamaterials", authors: "A Heidari Shirazi, H M-Sedighi", journal: "Acta Mechanica Solida Sinica", year: 2020, doi: "10.1007/s10338-020-00171-4", link: "https://doi.org/10.1007/s10338-020-00171-4" },
+            { title: "On the response of fluid-conveying viscoelastic functionally graded nanotubes subjected to longitudinal magnetic field based on a nonlocal strain gradient shell model", authors: "H M-Sedighi, A Heidari Shirazi", journal: "The European Physical Journal Plus", year: 2020, doi: "10.1140/epjp/s13360-020-00366-4", link: "https://doi.org/10.1140/epjp/s13360-020-00366-4" },
+            { title: "Application of multiple scale method in analysis of vibrational behavior of a metamaterial beam containing nonlinear local resonator", authors: "H M-Sedighi, A Heidari Shirazi", journal: "Modares Mechanical Engineering", year: 2019, link: "https://mme.modares.ac.ir/article-15-23668-en.html" },
+            { title: "Dynamic stability of viscoelastic micro-tubes conveying fluid and embedded in a visco-Pasternak foundation based on the modified strain gradient theory", authors: "A Farokhi, H M-Sedighi, A Heidari Shirazi", journal: "Proceedings of the IMechE, Part L: Journal of Materials: Design and Applications", year: 2021, doi: "10.1177/14644207211029202", link: "https://doi.org/10.1177/14644207211029202" },
+            { title: "Influence of nonlinear energy sink on the chaotic behaviors of a FGM viscoelastic microbeam subjected to a uniform temperature field and an axial force", authors: "A Farokhi, H M-Sedighi, A Heidari Shirazi", journal: "Proceedings of the IMechE, Part L: Journal of Materials: Design and Applications", year: 2021, doi: "10.1177/14644207211051515", link: "https://doi.org/10.1177/14644207211051515" }
+        ];
+
+        const publicationsContainer = document.getElementById('publications-container');
+        const prevPageBtn = document.getElementById('prevPageBtn');
+        const nextPageBtn = document.getElementById('nextPageBtn');
+        const pageIndicator = document.getElementById('pageIndicator');
+        const itemsPerPage = 4;
+        let currentPage = 1;
+
+        function displayPublications() {
+            publicationsContainer.innerHTML = '';
+            const totalPages = Math.ceil(publications.length / itemsPerPage);
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedItems = publications.slice(startIndex, endIndex);
+
+            paginatedItems.forEach(pub => {
+                const pubElement = document.createElement('div');
+                pubElement.className = 'card rounded-xl p-5 text-sm';
+                pubElement.innerHTML = `
+                    <p class="font-semibold text-dark">${pub.title}</p>
+                    <p class="text-subtle mt-1">${pub.authors}</p>
+                    <p class="mt-2">
+                        <span class="italic">${pub.journal}</span>, ${pub.year}.
+                        ${pub.link ? `<a href="${pub.link}" target="_blank" class="highlight-link ml-2">View Publication</a>` : ''}
+                    </p>
+                `;
+                publicationsContainer.appendChild(pubElement);
+            });
+
+            pageIndicator.textContent = `Page ${currentPage} of ${totalPages}`;
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages;
+        }
+
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPublications();
+            }
+        });
+
+        nextPageBtn.addEventListener('click', () => {
+            if (currentPage < Math.ceil(publications.length / itemsPerPage)) {
+                currentPage++;
+                displayPublications();
+            }
+        });
+
+        displayPublications(); // Initial display
     });
   </script>
 </body>
