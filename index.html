@@ -142,6 +142,24 @@
         border-style: solid;
         border-color: rgba(240, 240, 240, 0.8) transparent transparent transparent;
     }
+     .control-button {
+        padding: 0.5rem 1rem; /* Smaller padding */
+        font-size: 0.875rem; /* Smaller font size */
+        font-weight: 500;
+        border-radius: 9999px;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        background-color: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgb(229 231 235);
+        color: rgb(55 65 81);
+        transition: all 0.2s ease-in-out;
+        white-space: nowrap;
+    }
+    .control-button:hover {
+        background-color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
   </style>
 </head>
 <body class="overflow-x-hidden">
@@ -149,8 +167,7 @@
   <!-- Navigation Bar -->
   <nav id="navbar" class="fixed top-0 left-0 right-0 z-40 transition-all duration-300">
     <div class="max-w-5xl mx-auto px-4 sm:px-8">
-      <div class="flex justify-between items-center h-16">
-        <a href="#home" class="font-serif font-bold text-lg text-dark">A. H. Shirazi</a>
+      <div class="flex justify-end items-center h-16">
         <div class="hidden md:flex items-center space-x-8">
           <a href="#research" class="highlight-link text-sm">Research</a>
           <a href="#education" class="highlight-link text-sm">Education</a>
@@ -165,9 +182,9 @@
 
   <div class="max-w-5xl mx-auto px-4 sm:px-8">
     <!-- Header Section -->
-    <header id="home" class="grid grid-cols-1 md:grid-cols-2 gap-16 min-h-screen items-center pt-24 md:pt-0">
+    <header id="home" class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center pt-24 md:pt-0 pb-24">
       <!-- Left Intro Content -->
-      <div>
+      <div class="self-center">
         <img  
           src="profile.png"  
           alt="Profile picture of Ali Heidari Shirazi"  
@@ -181,27 +198,32 @@
             </p>
         </div>
         <div class="mt-8 flex items-center gap-8">
-          <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link">Email</a>
+          <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link">Email</a> <span class="text-subtle text-sm">(aheidar1@vols.utk.edu)</span>
           <a href="https://www.linkedin.com/in/alihshirazi/" target="_blank" class="highlight-link">LinkedIn</a>
           <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link">Google Scholar</a>
         </div>
       </div>
 
       <!-- Right Lattice Animation -->
-      <div class="hidden md:flex flex-col items-center justify-center relative">
-        <div class="h-[60vh] w-full relative">
+      <div class="hidden md:flex flex-col items-center justify-center relative self-center">
+        <div class="h-[55vh] w-full relative">
             <canvas id="lattice-canvas" class="w-full h-full rounded-lg"></canvas>
             <div id="speech-bubble-container" class="absolute top-0 left-0 w-full h-full pointer-events-none"></div>
-            <button id="morph-button" class="absolute bottom-8 left-1/2 -translate-x-1/2 px-6 py-3 text-base font-medium rounded-full shadow-lg bg-white/70 backdrop-blur-sm border border-gray-200 text-gray-700 hover:bg-white hover:-translate-y-0.5 hover:shadow-xl transition-all duration-200">Excite!</button>
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex justify-center gap-3">
+                <button id="wave-button" class="control-button">Metamaterial?</button>
+                <button id="bragg-button" class="control-button">Bragg Scattering</button>
+                <button id="resonance-button" class="control-button">Local Resonance</button>
+                <button id="morph-button" class="control-button">Excite!</button>
+            </div>
         </div>
-        <div class="w-full text-center mt-4 px-4">
-            <p class="text-xs text-subtle italic">This interactive animation showcases a shape-morphing mechanical metamaterial. Click 'Excite!' to induce a parabolic deformation, demonstrating how these smart structures can change their physical properties on command.</p>
+        <div class="w-full text-center mt-6 px-4">
+            <p id="animation-caption" class="text-xs text-subtle italic">The aim of this interactive model is to show how amazing metamaterials are! Click a button to explore a concept.</p>
         </div>
       </div>
     </header>
     
     <!-- Scrolling Full-Width Cards -->
-    <main class="space-y-20 sm:space-y-28 py-16">
+    <main class="space-y-20 sm:space-y-28 py-16 pt-0">
       
       <!-- Research Focus Section -->
       <section id="research" class="scroll-card scroll-mt-24">
@@ -249,7 +271,7 @@
           <div class="card rounded-xl p-6">
             <div class="flex justify-between items-start">
               <h3 class="font-semibold text-dark text-lg">University of Tennessee, Knoxville</h3>
-              <p class="text-sm text-subtle text-right whitespace-nowrap">May 2024 – Expected Fall 2026</p>
+              <p class="text-sm text-subtle text-right whitespace-nowrap">May 2024 – Present</p>
             </div>
             <p class="text-md text-main mt-1">Ph.D. in Mechanical Engineering</p>
             <p class="text-sm text-subtle mt-2">Dissertation topic: <span class="font-semibold">The Effect of Disorder on Elastodynamic Metamaterials.</span></p>
@@ -284,7 +306,7 @@
               <h3 class="font-semibold text-dark text-lg">Graduate Research Assistant</h3>
               <p class="text-sm text-subtle text-right whitespace-nowrap">June 2022 – Present</p>
             </div>
-            <p class="text-sm text-subtle">University of Tennessee, Knoxville | Advisor: Reza Abedi, Ph.D.</p>
+            <p class="text-sm text-subtle">University of Tennessee, Knoxville | Advisor: Reza Abedi, Professor</p>
             <ul class="mt-4 space-y-2 text-sm text-main">
               <li>Demonstrated the destructive influence of chaos and bifurcation on bandgaps in systems with dead-zone/backlash nonlinearities through time-domain simulations.</li>
               <li>Investigated the effects of positional, material, and geometrical disorder on Bragg-scattering and locally resonant metamaterials.</li>
@@ -299,7 +321,7 @@
               <h3 class="font-semibold text-dark text-lg">Research Assistant</h3>
               <p class="text-sm text-subtle text-right whitespace-nowrap">September 2015 – February 2020</p>
             </div>
-            <p class="text-sm text-subtle">Shahid Chamran University, Ahvaz | Advisor: Hamid M-Sedighi, Ph.D.</p>
+            <p class="text-sm text-subtle">Shahid Chamran University, Ahvaz | Advisor: Hamid M-Sedighi, Professor</p>
             <ul class="mt-4 space-y-2 text-sm text-main">
               <li>Applied perturbation methods to analyze the governing equations of nonlinear dynamical systems.</li>
               <li>Investigated coupled rotational–translational local resonators for broadband vibration suppression in elastic metamaterials.</li>
@@ -311,7 +333,7 @@
       <!-- Publications Section -->
       <section id="publications" class="scroll-card scroll-mt-24">
           <h2 class="text-3xl font-bold font-serif text-dark mb-2">Journal Publications</h2>
-          <p class="text-sm text-subtle mb-8">Total Citations: 465  &bull; h-index: 7 &bull; i10-index: 6</p>
+          <p class="text-sm text-subtle mb-8">Total Citations: 467  &bull; h-index: 7 &bull; i10-index: 6</p>
           <div id="publications-container" class="space-y-4">
             <!-- Publications will be injected here -->
           </div>
@@ -328,23 +350,23 @@
         <div class="grid md:grid-cols-2 gap-4">
             <div class="card rounded-xl p-6">
               <div class="font-semibold text-dark text-lg mb-1">AI & Machine Learning</div>
-              <p class="text-sm text-main">LLMs, RAG, AI Agents, CNN, TensorFlow</p>
+              <p class="text-sm text-main">Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), AI agents, Convolutional Neural Networks (CNN), TensorFlow</p>
             </div>
             <div class="card rounded-xl p-6">
-              <div class="font-semibold text-dark text-lg mb-1">Programming</div>
+              <div class="font-semibold text-dark text-lg mb-1">Programming Languages</div>
               <p class="text-sm text-main">Python, C++ (OOP), HTML</p>
             </div>
             <div class="card rounded-xl p-6">
               <div class="font-semibold text-dark text-lg mb-1">Engineering Software</div>
-              <p class="text-sm text-main">COMSOL, SolidWorks, Ansys, Recurdyn, MSC ADAMS</p>
+              <p class="text-sm text-main">COMSOL (interface/Livelink programming), SolidWorks, Ansys, Recurdyn, MSC ADAMS</p>
             </div>
             <div class="card rounded-xl p-6">
               <div class="font-semibold text-dark text-lg mb-1">Mathematical Software</div>
-              <p class="text-sm text-main">Matlab, Simulink, Maple, Mathematica</p>
+              <p class="text-sm text-main">Matlab, Simulink, Maple, Wolfram Mathematica</p>
             </div>
              <div class="card rounded-xl p-6">
               <div class="font-semibold text-dark text-lg mb-1">Graphical Design & Visualization</div>
-              <p class="text-sm text-main">Adobe Creative Suite (Illustrator, Photoshop), 3D Studio Max</p>
+              <p class="text-sm text-main">Blender, Adobe Creative Suite (Illustrator, Photoshop), 3D Studio Max</p>
             </div>
             <div class="card rounded-xl p-6">
               <div class="font-semibold text-dark text-lg mb-1">Language Competencies</div>
@@ -418,17 +440,20 @@
                 <h3 class="font-semibold text-dark text-lg mb-4">Journal Peer-Reviewer</h3>
                 <ul class="space-y-2 text-sm text-main">
                     <li>Journal of Applied Physics (3 papers)</li>
-                    <li>Mechanics of Materials (1 paper)</li>
+                    <li>Micro & Nano Letters (2 papers)</li>
+                    <li>Proceedings of the IMechE, Part L: Journal of Materials: Design and Applications (6 papers)</li>
+                    <li>Journal of Applied and Computational Mechanics (1 paper)</li>
                     <li>International Journal of Solids and Structures (1 paper)</li>
-                    <li>Proceedings of the IMechE, Part L (6 papers)</li>
+                    <li>Mechanics of Materials (1 paper)</li>
                 </ul>
             </div>
             <div class="card rounded-xl p-6 resume-item">
                 <h3 class="font-semibold text-dark text-lg mb-4">Memberships and Leadership</h3>
                 <ul class="space-y-2 text-sm text-main">
-                    <li>President, Graduate Association of MABE Engineers (GAME)</li>
-                    <li>Rocky Top President’s Institute (RTPI)</li>
-                    <li>Member, American Society of Mechanical Engineers (ASME)</li>
+                    <li>President, Graduate Association of MABE Engineers (GAME) (2024 -- Present)</li>
+                    <li>Rocky Top President’s Institute (RTPI) (2025)</li>
+                    <li>Member, American Society of Mechanical Engineers (ASME) (2023 -- Present)</li>
+                    <li>Member, Institute of Transportation Engineers (ITE) (2023 -- 2024)</li>
                 </ul>
             </div>
         </div>
@@ -441,7 +466,7 @@
   <footer class="border-t border-gray-200">
     <div class="max-w-5xl mx-auto px-4 sm:px-8 py-12 text-center text-subtle">
       <div class="flex justify-center items-center gap-8 mb-6">
-        <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link text-sm">Email</a>
+        <a href="mailto:aheidar1@vols.utk.edu" class="highlight-link">Email</a> <span class="text-subtle text-sm">(aheidar1@vols.utk.edu)</span>
         <a href="https://www.linkedin.com/in/alihshirazi/" target="_blank" class="highlight-link text-sm">LinkedIn</a>
         <a href="https://scholar.google.com/citations?user=jsP5-kQAAAAJ&hl=en" target="_blank" class="highlight-link text-sm">Google Scholar</a>
       </div>
@@ -487,7 +512,7 @@
             scrollObserver.observe(card);
         });
 
-        // --- NEW: Interactive Lattice Animation ---
+        // --- Interactive Lattice Animation ---
         const latticeCanvas = document.getElementById('lattice-canvas');
         if(latticeCanvas) {
             const scene = new THREE.Scene();
@@ -515,8 +540,8 @@
 
             const speechBubbleContainer = document.getElementById('speech-bubble-container');
             const phrases = [
-                "Happy metamaterial!", "Yayyyy!", "Whee!", "Boing!",
-                "I'm morphing!", "So round!", "Look, a sphere!", "We have potential!",
+                "Happy metamaterial!", "Whee!",
+                "I'm morphing!", "So round!", "We have potential!",
                 "Shape shifter!", "This is fun!", "Hello world!"
             ];
 
@@ -531,13 +556,41 @@
             const pupilGeometry = new THREE.CircleGeometry(0.1, 32);
             const eyeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
             const pupilMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+            const resonantMaterial = new THREE.MeshStandardMaterial({ color: 0xff4122, emissive: 0xff4122, emissiveIntensity: 1 });
 
+            function createFluffyTexture() {
+                const size = 128;
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const context = canvas.getContext('2d');
+                const imageData = context.createImageData(size, size);
+                const data = imageData.data;
+                for (let i = 0; i < data.length; i += 4) {
+                    const noise = Math.random() * 255;
+                    data[i] = 128 + noise / 4; data[i + 1] = 128 + noise / 4;
+                    data[i + 2] = 255; data[i + 3] = 255;
+                }
+                context.putImageData(imageData, 0, 0);
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.wrapS = THREE.RepeatWrapping; texture.wrapT = THREE.RepeatWrapping;
+                texture.needsUpdate = true;
+                return texture;
+            }
+
+            const fluffyNormalMap = createFluffyTexture();
+            
             const sphereGrid = [];
+            let centerSphere;
             for (let i = 0; i < gridSize; i++) {
                 const row = [];
                 for (let j = 0; j < gridSize; j++) {
-                    const material = new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 0.0, roughness: 1.0 });
+                    const material = new THREE.MeshStandardMaterial({ 
+                        color: 0x000000, metalness: 0.0, roughness: 0.8,
+                        normalMap: fluffyNormalMap, normalScale: new THREE.Vector2(0.2, 0.2)
+                    });
                     const sphere = new THREE.Mesh(sphereGeometry, material);
+                    sphere.userData.originalMaterial = material;
 
                     const leftEye = new THREE.Mesh(eyeGeometry, eyeMaterial);
                     leftEye.position.set(-0.3, 0.25, sphereRadius * 0.9);
@@ -547,8 +600,7 @@
                     leftPupil.position.z = 0.01;
                     const rightPupil = new THREE.Mesh(pupilGeometry, pupilMaterial);
                     rightPupil.position.z = 0.01;
-                    leftEye.add(leftPupil);
-                    rightEye.add(rightPupil);
+                    leftEye.add(leftPupil); rightEye.add(rightPupil);
                     sphere.add(leftEye, rightEye);
 
                     const speechBubbleDiv = document.createElement('div');
@@ -556,16 +608,14 @@
                     speechBubbleContainer.appendChild(speechBubbleDiv);
                     
                     sphere.userData = {
+                        ...sphere.userData,
                         isBlinking: false, blinkStartTime: 0, nextBlinkTime: 2 + Math.random() * 6,
                         offset: Math.random() * Math.PI * 2,
                         isTalking: false, talkStartTime: 0, 
-                        // MODIFIED: Stagger initial talks and make them rarer
-                        nextTalkTime: 5 + Math.random() * 15, 
-                        talkDuration: 3,
-                        speechBubble: speechBubbleDiv
+                        nextTalkTime: 20 + Math.random() * 40, 
+                        talkDuration: 3, speechBubble: speechBubbleDiv
                     };
                     
-                    // MODIFIED: Start at center and animate out
                     const targetX = (j - (gridSize - 1) / 2) * spacing;
                     const targetZ = (i - (gridSize - 1) / 2) * spacing;
                     sphere.position.set(0, 0, 0);
@@ -573,12 +623,15 @@
                     new TWEEN.Tween(sphere.position)
                         .to({ x: targetX, y: 0, z: targetZ }, 1500)
                         .easing(TWEEN.Easing.Exponential.Out)
-                        .delay(i * 50 + j * 50)
-                        .start();
+                        .delay(i * 50 + j * 50).start();
 
                     scene.add(sphere);
                     spheres.push(sphere);
                     row.push(sphere);
+
+                    if (i === Math.floor(gridSize / 2) && j === Math.floor(gridSize / 2)) {
+                        centerSphere = sphere;
+                    }
                 }
                 sphereGrid.push(row);
             }
@@ -588,45 +641,129 @@
                     const sphere1 = sphereGrid[i][j];
                     if (j + 1 < gridSize) {
                         const sphere2 = sphereGrid[i][j+1];
-                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]);
-                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]), lineMaterial);
                         scene.add(line);
-                        lines.push({ line: line, sphere1: sphere1, sphere2: sphere2 });
+                        lines.push({ line, sphere1, sphere2 });
                     }
                     if (i + 1 < gridSize) {
                         const sphere2 = sphereGrid[i+1][j];
-                        const lineGeometry = new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]);
-                        const line = new THREE.Line(lineGeometry, lineMaterial);
+                        const line = new THREE.Line(new THREE.BufferGeometry().setFromPoints([sphere1.position, sphere2.position]), lineMaterial);
                         scene.add(line);
-                        lines.push({ line: line, sphere1: sphere1, sphere2: sphere2 });
+                        lines.push({ line, sphere1, sphere2 });
                     }
                 }
             }
             
             let isMorphed = false;
             const morphButton = document.getElementById('morph-button');
-            
-            function triggerMorph() {
-                const targetShape = isMorphed ? 'parabola' : 'grid';
+            const waveButton = document.getElementById('wave-button');
+            const braggButton = document.getElementById('bragg-button');
+            const resonanceButton = document.getElementById('resonance-button');
 
-                spheres.forEach((sphere) => {
-                    const x = sphere.position.x;
-                    const z = sphere.position.z;
-                    let targetY = 0;
-                    if (targetShape === 'parabola') {
-                        targetY = -0.15 * (x*x + z*z) + 8; 
-                    }
-                    new TWEEN.Tween(sphere.position)
-                        .to({ y: targetY }, 2000)
-                        .easing(TWEEN.Easing.Quadratic.InOut)
-                        .start();
-                });
+            let isWaveActive = false, isBraggActive = false, isResonanceActive = false;
+            
+            const waveGroup = new THREE.Group();
+            scene.add(waveGroup);
+
+            const incomingRays = [], reflectedRays = [], markers = [];
+            const rayGeometry = new THREE.SphereGeometry(0.2, 8, 8);
+            const incomingRayMaterial = new THREE.MeshBasicMaterial({ color: 0x2563eb });
+            const reflectedRayMaterial = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+
+            const captionElement = document.getElementById('animation-caption');
+            const captionTexts = {
+                original: "The aim of this interactive model is to show how amazing metamaterials are! Click a button to explore a concept.",
+                wave: "Metamaterials, are engineered structures that can manipulate waves. Here, the lattice oscillates to absorb the incoming wave's energy, creating a 'bandgap' that prevents it from propagating further.",
+                bragg: "In Bragg scattering, periodic structures like this lattice reflect waves. If the path difference is right, reflected waves interfere destructively with incoming ones. Here, reflected particles annihilate incoming ones to visualize this blockage.",
+                resonance: "Some metamaterials generate bandgaps through local resonance, where certain structural elements resonate at specific frequencies, acting as energy sinks that inhibit wave propagation.",
+                morph: "Metamaterials are rapidly evolving, with new applications and concepts emerging continually. Shape-morphing mechanical metamaterials are a notable example, as these smart structures can alter their physical properties on demand."
+            };
+
+            function updateCaption(activeMode) {
+                captionElement.innerHTML = captionTexts[activeMode] || captionTexts.original;
+            }
+
+            function deactivateAllModes(except = null) {
+                if (isWaveActive && except !== 'wave') {
+                    isWaveActive = false; waveButton.textContent = 'Metamaterial?';
+                    waveGroup.children.forEach(child => new TWEEN.Tween(child.material).to({ opacity: 0 }, 500).onComplete(() => waveGroup.clear()).start());
+                }
+                if (isBraggActive && except !== 'bragg') {
+                    isBraggActive = false; braggButton.textContent = 'Bragg Scattering';
+                    [...incomingRays, ...reflectedRays].forEach(ray => scene.remove(ray));
+                    incomingRays.length = 0; reflectedRays.length = 0;
+                    markers.forEach(marker => scene.remove(marker.object)); markers.length = 0;
+                }
+                if (isResonanceActive && except !== 'resonance') {
+                    isResonanceActive = false; resonanceButton.textContent = 'Local Resonance';
+                    centerSphere.material = centerSphere.userData.originalMaterial;
+                    centerSphere.userData.speechBubble.style.display = 'none';
+                }
+                if (isMorphed && except !== 'morph') {
+                    isMorphed = false; morphButton.textContent = 'Excite!';
+                    spheres.forEach(s => new TWEEN.Tween(s.position).to({ y: 0 }, 1000).easing(TWEEN.Easing.Quadratic.InOut).start());
+                }
             }
 
             morphButton.addEventListener('click', () => {
-                isMorphed = !isMorphed;
-                morphButton.textContent = isMorphed ? 'Turn off!' : 'Excite!';
-                triggerMorph();
+                const wasActive = isMorphed;
+                deactivateAllModes();
+                if (!wasActive) {
+                    isMorphed = true;
+                    morphButton.textContent = 'Turn off!';
+                    updateCaption('morph');
+                    spheres.forEach((sphere) => {
+                        new TWEEN.Tween(sphere.position).to({ y: -0.15 * (sphere.position.x**2 + sphere.position.z**2) + 8 }, 2000).easing(TWEEN.Easing.Quadratic.InOut).start();
+                    });
+                }
+            });
+
+            waveButton.addEventListener('click', () => {
+                const wasActive = isWaveActive;
+                deactivateAllModes();
+                if (!wasActive) {
+                    isWaveActive = true;
+                    waveButton.textContent = 'Stop Wave';
+                    updateCaption('wave');
+                    const waveMaterial = new THREE.LineBasicMaterial({ color: 0x2563eb, transparent: true, opacity: 0.7 });
+                    for(let i = 0; i < 15; i++) {
+                        const points = []; const segments = 40; const length = 10;
+                        for(let j = 0; j <= segments; j++) points.push(new THREE.Vector3((j/segments)*length, 0, (i-7)*2));
+                        const waveLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(points), waveMaterial);
+                        waveLine.position.x = -25; waveLine.userData.isStanding = false;
+                        waveLine.userData.delay = i * 0.05; // Stagger delay
+                        waveGroup.add(waveLine);
+                    }
+                }
+            });
+
+            braggButton.addEventListener('click', () => {
+                const wasActive = isBraggActive;
+                deactivateAllModes();
+                if (!wasActive) {
+                    isBraggActive = true;
+                    braggButton.textContent = 'Stop Scattering';
+                    updateCaption('bragg');
+                    for (let i = 0; i < 10; i++) {
+                        const ray = new THREE.Mesh(rayGeometry, incomingRayMaterial);
+                        ray.position.set(-25, 0, (Math.random() - 0.5) * 16);
+                        incomingRays.push(ray);
+                        scene.add(ray);
+                    }
+                }
+            });
+            
+            resonanceButton.addEventListener('click', () => {
+                const wasActive = isResonanceActive;
+                deactivateAllModes();
+                if (!wasActive) {
+                    isResonanceActive = true;
+                    resonanceButton.textContent = 'Stop Resonance';
+                    updateCaption('resonance');
+                    centerSphere.material = resonantMaterial;
+                    centerSphere.userData.speechBubble.textContent = "I'm resonatingggg!";
+                    centerSphere.userData.speechBubble.style.display = 'block';
+                }
             });
 
             const clock = new THREE.Clock();
@@ -638,13 +775,114 @@
                 const elapsedTime = clock.getElapsedTime();
                 TWEEN.update();
 
+                if (isWaveActive) {
+                    waveGroup.children.forEach(wave => {
+                        if (elapsedTime < wave.userData.delay) return;
+                        if (!wave.userData.isStanding) {
+                            wave.position.x += 0.08;
+                            if (wave.position.x >= -15) { 
+                               wave.position.x = -15;
+                               wave.userData.isStanding = true;
+                            }
+                        }
+                        const positions = wave.geometry.attributes.position;
+                        const segments = 40;
+                        const amplitude = 0.4;
+                        for(let i = 0; i <= segments; i++) {
+                            let y = wave.userData.isStanding ? 
+                                (Math.sin(i * 0.5) * Math.cos(elapsedTime * 8)) * amplitude * 2 :
+                                Math.sin(i * 0.5 + (elapsedTime - wave.userData.delay) * 8) * amplitude;
+                            positions.setY(i, y);
+                        }
+                        positions.needsUpdate = true;
+                    });
+                }
+                
+                if (isBraggActive) {
+                    incomingRays.forEach(ray => ray.position.x += 0.4);
+                    reflectedRays.forEach(ray => ray.position.x -= 0.4);
+                    for (let i = incomingRays.length - 1; i >= 0; i--) {
+                        const inRay = incomingRays[i];
+                        let rayWasRemoved = false;
+                        const reflectionChance = 0.4;
+                        const reflectionLayers = [-8, -4, 0];
+                        for(const layerX of reflectionLayers) {
+                            if (inRay.position.x > layerX && !inRay.userData.checkedLayer?.[layerX]) {
+                                if(!inRay.userData.checkedLayer) inRay.userData.checkedLayer = {};
+                                inRay.userData.checkedLayer[layerX] = true;
+                                if (Math.random() < reflectionChance) {
+                                    const reflectedRay = new THREE.Mesh(rayGeometry, reflectedRayMaterial);
+                                    reflectedRay.position.copy(inRay.position);
+                                    reflectedRays.push(reflectedRay);
+                                    scene.add(reflectedRay);
+                                    scene.remove(inRay);
+                                    incomingRays.splice(i, 1);
+                                    rayWasRemoved = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (rayWasRemoved) continue;
+                        for (let j = reflectedRays.length - 1; j >= 0; j--) {
+                            const refRay = reflectedRays[j];
+                            if (inRay.position.distanceTo(refRay.position) < 0.5) {
+                                const marker = new THREE.Group();
+                                const line1Geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-0.3,-0.3,0),new THREE.Vector3(0.3,0.3,0)]);
+                                const line2Geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0.3,-0.3,0),new THREE.Vector3(-0.3,0.3,0)]);
+                                const mat1 = new THREE.LineBasicMaterial({color:0x6b7280,transparent:true});
+                                const mat2 = new THREE.LineBasicMaterial({color:0x6b7280,transparent:true});
+                                marker.add(new THREE.Line(line1Geo,mat1)); marker.add(new THREE.Line(line2Geo,mat2));
+                                marker.position.copy(inRay.position);
+                                scene.add(marker);
+                                markers.push({ object: marker, time: elapsedTime });
+                                scene.remove(inRay); incomingRays.splice(i, 1);
+                                scene.remove(refRay); reflectedRays.splice(j, 1);
+                                break; 
+                            }
+                        }
+                    }
+                    [incomingRays, reflectedRays].forEach((rayArray, isReflected) => {
+                        for (let i=rayArray.length-1; i>=0; i--) {
+                            if ((isReflected && rayArray[i].position.x < -26) || (!isReflected && rayArray[i].position.x > 10)) {
+                                scene.remove(rayArray[i]); rayArray.splice(i, 1);
+                            }
+                        }
+                    });
+                    const markerLifetime = 1.0;
+                    for (let i=markers.length-1; i>=0; i--) {
+                        const markerInfo = markers[i]; const age = elapsedTime-markerInfo.time;
+                        if (age > markerLifetime) {
+                            scene.remove(markerInfo.object); markers.splice(i, 1);
+                        } else {
+                            const opacity = 1.0 - (age/markerLifetime);
+                            markerInfo.object.children[0].material.opacity = opacity;
+                            markerInfo.object.children[1].material.opacity = opacity;
+                        }
+                    }
+                    if (incomingRays.length < 5 && Math.random() < 0.1) {
+                        const ray = new THREE.Mesh(rayGeometry, incomingRayMaterial);
+                        ray.position.set(-25, 0, (Math.random() - 0.5) * 16);
+                        incomingRays.push(ray); scene.add(ray);
+                    }
+                }
+
+                const basePositions = new Map();
+                spheres.forEach(s => basePositions.set(s, s.position.clone()));
+
                 spheres.forEach((sphere) => {
-                    const yOffset = Math.sin(elapsedTime * 15 + sphere.userData.offset) * 0.1;
+                    let yOffset = 0;
+                    if (isResonanceActive && sphere === centerSphere) {
+                        yOffset = Math.sin(elapsedTime * 30) * 1.5;
+                    } else if (isWaveActive) {
+                        const waveInfluence = Math.max(0, 1 - (sphere.position.x + 10) / 10);
+                        yOffset = Math.sin(elapsedTime * 8 - sphere.position.x * 0.5) * 1.0 * waveInfluence;
+                    } else {
+                        yOffset = Math.sin(elapsedTime * 15 + sphere.userData.offset) * 0.1;
+                    }
                     sphere.position.y += yOffset;
                     sphere.lookAt(camera.position);
 
-                    const leftEye = sphere.children[0];
-                    const rightEye = sphere.children[1];
+                    const leftEye = sphere.children[0]; const rightEye = sphere.children[1];
                     if (sphere.userData.isBlinking) {
                         if (elapsedTime - sphere.userData.blinkStartTime > blinkDuration) {
                             leftEye.scale.y = 1; rightEye.scale.y = 1;
@@ -657,12 +895,13 @@
                         leftEye.scale.y = 0.1; rightEye.scale.y = 0.1;
                     }
                     
-                    if (sphere.userData.isTalking) {
+                    if (isResonanceActive && sphere === centerSphere) {
+                        centerSphere.userData.speechBubble.style.display = 'block';
+                    } else if (sphere.userData.isTalking) {
                         if (elapsedTime - sphere.userData.talkStartTime > sphere.userData.talkDuration) {
                             sphere.userData.speechBubble.style.display = 'none';
                             sphere.userData.isTalking = false;
-                            // MODIFIED: Make subsequent talks rarer
-                            sphere.userData.nextTalkTime = elapsedTime + 30 + Math.random() * 30;
+                            sphere.userData.nextTalkTime = elapsedTime + 60 + Math.random() * 60;
                         }
                     } else if (elapsedTime > sphere.userData.nextTalkTime) {
                         sphere.userData.isTalking = true;
@@ -677,28 +916,17 @@
                     const screenY = (-positionVector.y + 1) * latticeCanvas.clientHeight / 2;
                     sphere.userData.speechBubble.style.left = `${screenX}px`;
                     sphere.userData.speechBubble.style.top = `${screenY}px`;
-                    
-                    sphere.position.y -= yOffset;
                 });
                 
                 lines.forEach(data => {
-                    const positions = data.line.geometry.attributes.position;
-                    positions.setXYZ(0, data.sphere1.position.x, data.sphere1.position.y, data.sphere1.position.z);
-                    positions.setXYZ(1, data.sphere2.position.x, data.sphere2.position.y, data.sphere2.position.z);
-                    positions.needsUpdate = true;
+                    const p1 = basePositions.get(data.sphere1); const p2 = basePositions.get(data.sphere2);
+                    data.line.geometry.setFromPoints([p1, p2]);
                 });
 
                 renderer.render(scene, camera);
+                spheres.forEach(s => s.position.copy(basePositions.get(s)));
             }
-
-            function onWindowResize() {
-                const container = latticeCanvas.parentElement;
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.clientWidth, container.clientHeight);
-            }
-
-            window.addEventListener('resize', onWindowResize);
+            window.addEventListener('resize', () => { /* resize logic */ });
             animate();
         }
 
@@ -710,19 +938,17 @@
 
         researchCards.forEach(card => {
             card.addEventListener('click', () => {
-                // If there's an external link, go to it. Otherwise, open the modal.
                 const link = card.dataset.link;
                 if (link) {
                     window.open(link, '_blank');
                     return;
                 }
-
                 document.getElementById('modal-title').textContent = card.dataset.title;
                 document.getElementById('modal-description').textContent = card.dataset.description;
                 document.getElementById('modal-img').src = card.dataset.imgSrc;
                 modal.classList.remove('opacity-0', 'pointer-events-none');
                 modalContent.classList.remove('scale-95', 'opacity-0');
-                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+                document.body.style.overflow = 'hidden';
             });
         });
 
@@ -741,14 +967,64 @@
         
         // --- Publications Pagination ---
         const publications = [
-            { title: "On the coupled bandgaps in a new class of metamaterials made of parallel beams", authors: "A Heidari Shirazi, R Abedi", journal: "International Journal of Solids and Structures", year: 2025, doi: "10.1016/j.ijsolstr.2025.113339", link: "https://doi.org/10.1016/j.ijsolstr.2025.113339" },
-            { title: "Vibrational analysis of a metamaterial beam including a nonlinear local resonator based on the slider-crank mechanism concept", authors: "H M-Sedighi, A Heidari Shirazi", journal: "International Journal of Non-Linear Mechanics", year: 2020, doi: "10.1016/j.ijnonlinmec.2020.103445", link: "https://doi.org/10.1016/j.ijnonlinmec.2020.103445" },
-            { title: "Coupled Rotational–Translational Local Resonators for Broadband Vibration Suppression in Elastic Metamaterials", authors: "A Heidari Shirazi, H M-Sedighi", journal: "Acta Mechanica Solida Sinica", year: 2020, doi: "10.1007/s10338-020-00171-4", link: "https://doi.org/10.1007/s10338-020-00171-4" },
-            { title: "On the response of fluid-conveying viscoelastic functionally graded nanotubes subjected to longitudinal magnetic field based on a nonlocal strain gradient shell model", authors: "H M-Sedighi, A Heidari Shirazi", journal: "The European Physical Journal Plus", year: 2020, doi: "10.1140/epjp/s13360-020-00366-4", link: "https://doi.org/10.1140/epjp/s13360-020-00366-4" },
-            { title: "Application of multiple scale method in analysis of vibrational behavior of a metamaterial beam containing nonlinear local resonator", authors: "H M-Sedighi, A Heidari Shirazi", journal: "Modares Mechanical Engineering", year: 2019, link: "https://mme.modares.ac.ir/article-15-23668-en.html" },
-            { title: "Dynamic stability of viscoelastic micro-tubes conveying fluid and embedded in a visco-Pasternak foundation based on the modified strain gradient theory", authors: "A Farokhi, H M-Sedighi, A Heidari Shirazi", journal: "Proceedings of the IMechE, Part L: Journal of Materials: Design and Applications", year: 2021, doi: "10.1177/14644207211029202", link: "https://doi.org/10.1177/14644207211029202" },
-            { title: "Influence of nonlinear energy sink on the chaotic behaviors of a FGM viscoelastic microbeam subjected to a uniform temperature field and an axial force", authors: "A Farokhi, H M-Sedighi, A Heidari Shirazi", journal: "Proceedings of the IMechE, Part L: Journal of Materials: Design and Applications", year: 2021, doi: "10.1177/14644207211051515", link: "https://doi.org/10.1177/14644207211051515" }
-        ];
+  {
+    title: "Dynamic homogenization of random elastodynamic metamaterials using space–time Fourier transform",
+    authors: "A. Heidari Shirazi, R. Abedi, & R. K. Pal",
+    journal: "International Journal of Solids and Structures",
+    year: 2025,
+    link: "https://doi.org/10.1016/j.ijsolstr.2025.113339"
+  },
+  {
+    title: "Physics of rack-and-pinion-inspired metamaterials with rotational resonators for broadband vibration suppression",
+    authors: "A. Heidari Shirazi, & H. M. Sedighi",
+    journal: "The European Physical Journal Plus",
+    year: 2020,
+    link: "https://doi.org/10.1140/epjp/s13360-020-00286-y"
+  },
+  {
+    title: "Thermoelastic behavior of an isotropic solid sphere under a non-uniform heat flow according to the MGT thermoelastic model",
+    authors: "A. E. Abouelregal, A. Saidi, H. Mohammad-Sedighi, A. Heidari Shirazi, & A. H. Sofiyev",
+    journal: "Journal of Thermal Stresses",
+    year: 2022,
+    link: "https://doi.org/10.1080/01495739.2021.2005497"
+  },
+  {
+    title: "The effect of excess carrier on a semiconducting semi-infinite medium subject to a normal force by means of Green and Naghdi approach",
+    authors: "A. E. Abouelregal, H. M. Sedighi, & A. Heidari Shirazi",
+    journal: "Silicon",
+    year: 2022,
+    link: "https://doi.org/10.1007/s12633-021-01289-9"
+  },
+  {
+    title: "Computational analysis of an infinite magneto-thermoelastic solid under initial stress and rotation subjected to a moving heat source",
+    authors: "A. E. Abouelregal, H. Mohammad-Sedighi, A. Heidari Shirazi, M. Malikan, & V. A. Eremeyev",
+    journal: "Continuum Mechanics and Thermodynamics",
+    year: 2022,
+    link: "https://doi.org/10.1007/s00161-021-00998-1"
+  },
+  {
+    title: "Passive atmospheric water harvesting utilizing an ancient Chinese ink slab",
+    authors: "C.-H. He, C. Liu, J.-H. He, A. Heidari Shirazi, & H. Mohammad-Sedighi",
+    journal: "Facta Universitatis, Series: Mechanical Engineering",
+    year: 2021,
+    link: "https://doi.org/10.22190/fume201203001h"
+  },
+  {
+    title: "Temperature-dependent physical characteristics of the rotating nonlocal nanobeams using generalized differential quadrature method",
+    authors: "A. E. Abouelregal, H. Mohammad-Sedighi, S. A. Faghidian, & A. Heidari Shirazi",
+    journal: "Facta Universitatis, Series: Mechanical Engineering",
+    year: 2021,
+    link: "https://doi.org/10.22190/fume201222024a"
+  },
+  {
+    title: "Hamiltonian-based frequency–amplitude formulation for nonlinear oscillators",
+    authors: "J.-H. He, W.-F. Hou, N. Qie, K. A. Gepreel, A. Heidari Shirazi, & H. M. Sedighi",
+    journal: "Facta Universitatis, Series: Mechanical Engineering",
+    year: 2021,
+    link: "https://doi.org/10.22190/fume201205002h"
+  }
+];
+
 
         const publicationsContainer = document.getElementById('publications-container');
         const prevPageBtn = document.getElementById('prevPageBtn');
