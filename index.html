@@ -904,21 +904,11 @@
                         sphere.userData.blinkStartTime = elapsedTime;
                         leftEye.scale.y = 0.1; rightEye.scale.y = 0.1;
                     }
-                    
+						
                     if (isResonanceActive && sphere === centerSphere) {
                         centerSphere.userData.speechBubble.style.display = 'block';
-                    } else if (sphere.userData.isTalking) {
-                        if (elapsedTime - sphere.userData.talkStartTime > sphere.userData.talkDuration) {
-                            sphere.userData.speechBubble.style.display = 'none';
-                            sphere.userData.isTalking = false;
-                            sphere.userData.nextTalkTime = elapsedTime + 60 + Math.random() * 60;
-                        }
-                    } else if (elapsedTime > sphere.userData.nextTalkTime) {
-                        sphere.userData.isTalking = true;
-                        sphere.userData.talkStartTime = elapsedTime;
-                        sphere.userData.speechBubble.textContent = phrases[Math.floor(Math.random() * phrases.length)];
-                        sphere.userData.speechBubble.style.display = 'block';
-                    }
+					}
+ 
 
                     positionVector.copy(sphere.position);
                     positionVector.project(camera);
