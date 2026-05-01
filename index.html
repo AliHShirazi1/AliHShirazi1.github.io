@@ -263,7 +263,7 @@
                   <h3 class="font-semibold text-dark">Wave Propagation</h3>
                 </div>
             </div>
-            <div class="research-card group cursor-pointer" data-title="Dynamic Characterization" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials. (Published study)" data-link="https://doi.org/10.1016/j.ijsolstr.2025.113339" data-link-text="(Published study)" data-img-src="research2.png">
+            <div class="research-card group cursor-pointer" data-title="Dynamic Characterization" data-description="Developing and applying spacetime Fourier transforms and custom C++ tools to resolve analytical challenges in the homogenization of dispersive and disordered metamaterials." data-link="https://doi.org/10.1016/j.ijsolstr.2025.113339" data-link-text="View Published Study" data-img-src="research2.png">
                 <div class="card rounded-xl p-4 h-full">
                   <div class="overflow-hidden rounded-lg mb-4 aspect-card-image">
                     <img src="research2.png" alt="Abstract representation of computational methods" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105">
@@ -395,7 +395,7 @@
             </div>
             <div class="card rounded-xl p-6 flex justify-between items-center">
               <p class="font-semibold text-dark">Graduate Student Senate Award for Excellence in Graduate Research</p>
-              <p class="text-sm text-subtle whitespace-nowrap">2025</p>
+              <p class="text-sm text-subtle whitespace-nowrap">2025 & 2026</p>
             </div>
             <div class="card rounded-xl p-6 flex justify-between items-center">
               <p class="font-semibold text-dark">First Place, National Student Competition in Glider Design, Sharif University</p>
@@ -936,21 +936,26 @@
         const closeModalBtn = document.getElementById('close-modal-btn');
         const researchCards = document.querySelectorAll('.research-card');
 
-        researchCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const link = card.dataset.link;
-                if (link) {
-                    window.open(link, '_blank');
-                    return;
-                }
-                document.getElementById('modal-title').textContent = card.dataset.title;
-                document.getElementById('modal-description').textContent = card.dataset.description;
-                document.getElementById('modal-img').src = card.dataset.imgSrc;
-                modal.classList.remove('opacity-0', 'pointer-events-none');
-                modalContent.classList.remove('scale-95', 'opacity-0');
-                document.body.style.overflow = 'hidden';
-            });
-        });
+		researchCards.forEach(card => {
+		    card.addEventListener('click', () => {
+		        document.getElementById('modal-title').textContent = card.dataset.title;
+		        document.getElementById('modal-description').textContent = card.dataset.description;
+		        document.getElementById('modal-img').src = card.dataset.imgSrc;
+		        
+		        // Handle link if it exists
+		        const link = card.dataset.link;
+		        const linkText = card.dataset.linkText;
+		        const descElement = document.getElementById('modal-description');
+		        if (link) {
+		            descElement.innerHTML = card.dataset.description + 
+		                `<br><br><a href="${link}" target="_blank" class="highlight-link font-semibold text-blue-600 hover:text-blue-700">${linkText || 'View Publication'}</a>`;
+		        }
+		        
+		        modal.classList.remove('opacity-0', 'pointer-events-none');
+		        modalContent.classList.remove('scale-95', 'opacity-0');
+		        document.body.style.overflow = 'hidden';
+		    });
+		});
 
         function closeModal() {
             modal.classList.add('opacity-0', 'pointer-events-none');
