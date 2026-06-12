@@ -255,6 +255,7 @@
     <main class="space-y-20 sm:space-y-28 py-16 pt-0">
 
 <!-- Attractor GIF banner -->
+<div class="grid grid-cols-3 gap-6 mb-6 -mt-8 items-center">
 <div class="flex flex-col items-center justify-center attractor-info cursor-pointer group"
        data-title="Chaotic Strange Attractors"
        data-img="Attractor.gif"
@@ -1035,7 +1036,19 @@
 		        document.body.style.overflow = 'hidden';
 		    });
 		});
-
+		// --- Attractor info modal ---
+        document.querySelectorAll('.attractor-info').forEach(el => {
+            el.addEventListener('click', () => {
+                document.getElementById('modal-title').textContent = el.dataset.title;
+                document.getElementById('modal-img').src = el.dataset.img;
+                const link = el.dataset.link;
+                document.getElementById('modal-description').innerHTML = el.dataset.description +
+                    (link ? `<br><br><a href="${link}" target="_blank" class="highlight-link font-semibold text-blue-600 hover:text-blue-700">Read more in Nonlinear Dynamics ↗</a>` : '');
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                document.body.style.overflow = 'hidden';
+            });
+        });
         function closeModal() {
             modal.classList.add('opacity-0', 'pointer-events-none');
             modalContent.classList.add('scale-95', 'opacity-0');
