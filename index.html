@@ -169,6 +169,26 @@
         transform: translateY(-2px);
         box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     }
+	  .hover-float {
+  animation: floaty 4s ease-in-out infinite;
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.hover-shadow {
+  width: 55%;
+  height: 14px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: rgba(31, 41, 55, 0.18);
+  filter: blur(8px);
+  animation: shadowPulse 4s ease-in-out infinite;
+}
+@keyframes shadowPulse {
+  0%, 100% { transform: scaleX(1);    opacity: 0.5; }
+  50%      { transform: scaleX(0.85); opacity: 0.3; }
+}
   </style>
 </head>
 <body class="overflow-x-hidden">
@@ -235,23 +255,27 @@
     <main class="space-y-20 sm:space-y-28 py-16 pt-0">
 
 <!-- Attractor GIF banner -->
-<div class="grid grid-cols-3 gap-6 mb-12 items-center">
-  <div class="flex items-center justify-center">
+<div class="grid grid-cols-3 gap-6 mb-6 -mt-8 items-center">
+  <div class="flex flex-col items-center justify-center">
     <img src="Attractor.gif" alt="Rotating chaotic attractor"
-         class="w-full max-w-[220px] h-auto object-contain"
+         class="w-full max-w-[220px] h-auto object-contain hover-float"
          loading="lazy" onerror="this.style.display='none'">
+    <div class="hover-shadow"></div>
   </div>
-  <div class="flex items-center justify-center">
+  <div class="flex flex-col items-center justify-center">
     <img src="Attractor2.gif" alt="Rotating attractor"
-         class="w-full max-w-[220px] h-auto object-contain"
+         class="w-full max-w-[220px] h-auto object-contain hover-float"
          loading="lazy" onerror="this.style.display='none'">
+    <div class="hover-shadow"></div>
   </div>
-  <div class="flex items-center justify-center">
+  <div class="flex flex-col items-center justify-center">
     <img src="Attractor3.gif" alt="Rotating attractor"
-         class="w-full max-w-[220px] h-auto object-contain"
+         class="w-full max-w-[220px] h-auto object-contain hover-float"
          loading="lazy" onerror="this.style.display='none'">
+    <div class="hover-shadow"></div>
   </div>
 </div>
+		
 <!-- Research Focus Section -->
       <section id="research" class="scroll-card scroll-mt-24">
         <h2 class="text-3xl font-bold font-serif text-dark mb-10">Research Focus</h2>
